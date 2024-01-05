@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const courseSchema = new mongoose.Schema({
-    name:{
+    title:{
         type: String,
         required: true,
         maxLen: 50,
@@ -12,11 +12,11 @@ const courseSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    Instructor:{
+    Instructor:[{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "User"
-    },
+    }],
     whatYouWillLearn:{
         type: String,
         required: true,
@@ -32,7 +32,7 @@ const courseSchema = new mongoose.Schema({
     },
     CourseContent:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "SubSection",
+        ref: "Section",
         required:true,
     }],
     tags:{
@@ -46,6 +46,7 @@ const courseSchema = new mongoose.Schema({
     }],
     totalRatings:{
         type: Number,
+        default: 0,
     },
     studentsEnrolled:[{
         type:mongoose.Schema.Types.ObjectId,
