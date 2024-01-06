@@ -7,6 +7,8 @@ import { generateKey, hotp } from "otp-io";
 import { hmac, randomBytes } from "otp-io/crypto";
 require('dotenv').config();
 // send OTP
+
+let otpCounter = 0;
 exports.sendOTP = async(req, res) => {
     try{
         const email = req.body.email;
@@ -26,11 +28,9 @@ exports.sendOTP = async(req, res) => {
             })
         }
 
-        // check for uniqueness of otp - will not do as it stupid code to write
-        // instead in future i will use a different library
-
         const key = generateKey(randomBytes, /* bytes: */ 20); // Generate a key for HOTP
-        const code = hotp(hmac, { secret: key, counter: 0, digits: 6 });
+        const code = hotp(hmac, { secret: key, counter: otpCounter, digits: 6 });
+        otpCounter++;
 
         const OTP = otp.create({
             email : email,
