@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const courseProgressSchema = new mongoose.Schema({
-    course:{
+    courseId:{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref:"Course"

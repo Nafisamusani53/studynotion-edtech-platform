@@ -1,9 +1,8 @@
 const mongoose = require("mongoose")
 
 const reviewAndRatingSchema = new mongoose.Schema({
-    body:{
+    reviews:{
         type: String,
-        maxLen: 50,
         required: true,
     },
     rating:{
@@ -13,6 +12,8 @@ const reviewAndRatingSchema = new mongoose.Schema({
     user:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+        required: true,
+
     },
 })
 

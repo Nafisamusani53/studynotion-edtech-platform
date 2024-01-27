@@ -25,10 +25,13 @@ const userSchema = new mongoose.Schema({
         required: true,
         enum: ["Admin", "Student", "Instructor"]
     },
-    contactNo:{
-        type: Number,
-        required: true,
-        trim: true
+    active: {
+        type: Boolean,
+        default: true,
+    },
+    approved: {
+        type: Boolean,
+        default: true,
     },
     profile: {
         type: mongoose.Schema.Types.ObjectId,
@@ -43,17 +46,20 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "CourseProgress"
     }],
-    image:{
+    image: {
         type: String,
         default: "",
         required: true,
     },
-    token:{
+    token: {
         type: String,
     },
-    resetPasswordExpires:{
+    resetPasswordExpires: {
         type: Date,
     }
-})
+},
+    //Add timestamps for when the document is created and last modified
+    { timestamps: true }
+)
 
 module.exports = mongoose.model("User", userSchema)

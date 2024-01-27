@@ -1,0 +1,4 @@
+{
+    "vsintellicode.java.completionsEnabled": true,
+    "vsintellicode.features.python.deepLearning": "disabled"
+}

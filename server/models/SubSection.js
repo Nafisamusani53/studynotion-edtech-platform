@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const subSection = new mongoose.Schema({
+const subSectionSchema = new mongoose.Schema({
     title:{
         type:String,
         required: true,
@@ -20,4 +20,4 @@ const subSection = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model("SubSection", subSection)
+module.exports = mongoose.model("SubSection", subSectionSchema)
