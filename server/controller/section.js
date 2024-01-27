@@ -132,14 +132,18 @@ exports.deleteSection = async(req, res) => {
                 $pull : {
                     courseContent:section._id
                 }
-            },{new: true}).populate(
+            },{new: true})
+            .populate(
                 {
                     path: "courseContent",
                     populate: {
                         path: "subSection"
                     }
                 }
-            ).exec();
+            )
+            .populate("category")
+            .populate("reviewAndRatings")
+            .exec();
         
 
         // return response
@@ -152,6 +156,54 @@ exports.deleteSection = async(req, res) => {
         res.status(500).json({
             success: true,
             message: "Failed to delete a section",
+            error: err.message
+        })
+    }
+}
+
+exports.getAllCourseDetails = async(req,res) => {
+    try{
+        // fetch courseId
+        const {courseId} = req.body;
+
+        // validate id
+        if(!courseId){
+            return res.status(400).json({
+                success: false,
+                message: "Missing properties"
+            })
+        }
+
+        // find the course and populate everything
+        const course = await Course.findById(courseId).
+        populate(
+        {
+            path: "instructor",
+            populate: {
+                path: "profile"
+            }
+        })
+        .populate("cate").exec();
+ 
+        if(!course){
+            return res.status(400).json({
+                success: false,
+                message: "Course Not Found"
+            })
+        }
+
+        // return response
+        return res.status(200).json({
+            success: true,
+            message: "Detailed fetched successfully",
+            data: course,
+        })
+
+    }
+    catch(err){
+        res.status(500).json({
+            success: true,
+            message: "Failed to fetch the data",
             error: err.message
         })
     }
