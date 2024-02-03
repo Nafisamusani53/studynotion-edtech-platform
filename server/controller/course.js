@@ -36,6 +36,9 @@ exports.createCourse = async(req,res) => {
         }
 
         //TODO: add pending and approval of status based on admin approval
+
+
+        
         
         const userId = req.user._id
 

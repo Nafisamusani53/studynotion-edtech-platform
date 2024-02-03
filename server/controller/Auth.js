@@ -221,7 +221,7 @@ exports.logIn = async(req,res) => {
                 role: user.role,
                 id : user._id
             }
-            const token = jwt.sign(payload, process.env.SECRET, {
+            const token = jwt.sign(payload, process.env.JWT_SECRET, {
                 expiresIn: '2h'
             })
 
