@@ -116,7 +116,7 @@ exports.getAverageRatings = async(req, res) => {
 }
 
 // fetches all the reviews and ratings irrespective of the course
-exports.getAllRatings = async(req,res) => {
+exports.getAllRating = async(req,res) => {
     try{
         // get all the ratings and reviews and populate user and course
         const result = await ReviewAndRatings.find({}).sort({rating: "desc"})

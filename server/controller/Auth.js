@@ -1,10 +1,10 @@
 const bcrypt = require('bcrypt')
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const otp = require('../models/OTP');
+// const otp = require('../models/OTP');
 const OTP = require('../models/OTP');
-import { generateKey, hotp } from "otp-io";
-import { hmac, randomBytes } from "otp-io/crypto";
+// import { generateKey, hotp } from "otp-io";
+// import { hmac, randomBytes } from "otp-io/crypto";
 require('dotenv').config();
 
 // send OTP
@@ -81,7 +81,7 @@ exports.sendOTP = async(req, res) => {
 }
 
 // signup
-exports.signUp = async(req, res) => {
+exports.signup = async(req, res) => {
     try{
         const {
             firstName,
@@ -190,7 +190,7 @@ exports.signUp = async(req, res) => {
 }
 
 // login
-exports.logIn = async(req,res) => {
+exports.login = async(req,res) => {
     try{
         const {email, pass} = req.body;
 

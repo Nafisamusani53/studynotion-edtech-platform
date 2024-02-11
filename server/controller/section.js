@@ -52,7 +52,7 @@ exports.createSection = async(req, res) => {
 }
 
 // updated section
-exports.updatedSection = async(req, res) => {
+exports.updateSection = async(req, res) => {
     try{
         // fetch Data
         const{sectionName, sectionId} = req.body

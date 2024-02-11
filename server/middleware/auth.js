@@ -12,6 +12,7 @@ exports.auth = async(req,res, next) => {
         try{
         const decode = await jwt.verify(token, process.env.JWT_SECRET) 
         req.user = decode
+        next();
         }
         catch(error){
             return res.status(403).json({
@@ -19,7 +20,7 @@ exports.auth = async(req,res, next) => {
                 message: error.message
             })
         }
-        next();
+        
     }
     catch(error){
         res.status(500).json({

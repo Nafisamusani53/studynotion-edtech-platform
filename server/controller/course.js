@@ -118,7 +118,7 @@ exports.createCourse = async(req,res) => {
 }
 
 // get all course
-exports.getAllDetails = async(req,res) => {
+exports.getAllCourses = async(req,res) => {
     try{
         const allCourses = await Course.find({}, {
             courseName : true,
@@ -143,3 +143,68 @@ exports.getAllDetails = async(req,res) => {
         })
     }
 }
+exports.getAllCourseDetails = async(req,res) => {
+    try{
+        // fetch courseId
+        const {courseId} = req.body;
+
+        // validate id
+        if(!courseId){
+            return res.status(400).json({
+                success: false,
+                message: "Missing properties"
+            })
+        }
+
+        // find the course and populate everything
+        const course = await Course.findById(courseId).
+        populate(
+        {
+            path: "instructor",
+            select: "firstName lastName email image",
+            }
+        )
+        .populate({
+            path : {
+                path : "courseContent",
+                populate: {
+                    path: "subSection"
+                }
+            }
+        })
+        .populate("category")
+        .populate("reviewAndRatings").exec();
+ 
+        if(!course){
+            return res.status(400).json({
+                success: false,
+                message: "Course Not Found"
+            })
+        }
+
+        // return response
+        return res.status(200).json({
+            success: true,
+            message: "Detailed fetched successfully",
+            data: course,
+        })
+
+    }
+    catch(err){
+        res.status(500).json({
+            success: true,
+            message: "Failed to fetch the data",
+            error: err.message
+        })
+    }
+}
+
+exports.editCourse = async(req, res)=>{
+    try{
+
+    }
+    catch(err){
+        
+    }
+}
+

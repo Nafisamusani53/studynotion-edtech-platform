@@ -8,6 +8,10 @@ const cookieparser = require('cookie-parser')
 const fileUpload = require('express-fileupload')
 
 // imports all the routes here
+const userRoutes = require('./routes/user')
+const profileRoutes = require('./routes/profile')
+const paymentRoutes = require('./routes/payments')
+const courseRoutes = require('./routes/course')
 
 app.use(express.json());
 
@@ -38,7 +42,10 @@ app.use('api/v1/payment', paymentRoutes)
 
 // default route
 app.get('/', (req,res) => {
-    res.send("This is Homepage")
+    res.json({
+        success: true,
+        message : "Your server is running....."
+    })
 })
 
 // start the app
