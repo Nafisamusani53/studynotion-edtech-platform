@@ -39,14 +39,28 @@ const Home = () => {
             <CtnButton text={'Book a Demo'} flag={false}/>
           </div>
 
-          <div className='w-[1035px] mx-3 my-7 shadow-[10px_-5px_50px_-5px] shadow-blue-200'>
+          <div className=' mx-3 my-7 shadow-[10px_-5px_50px_-5px] shadow-blue-200'>
             <video className="shadow-[20px_20px_rgba(255,255,255)]" loop autoplay="true" controls>
               <source src={banner} type="video/mp4"/>
             </video>
           </div>
 
-          <CodeBlocks left={true} sequence={"<!DOCTYPE html>\n<html>\nhead><title>Example</\ntitle><linkrel=\"stylesheet\"href=\"styles.css\">\n/head>\nbody>\nh1><ahref="/">Header</a>\n/h1>\nnav><ahref=\"one/\">One</a><ahref=\"two/\">Two</\na><ahref=\"three/\">Three</a>\n/nav>"}
-          button1={"Try it Youself"} button2={"Learn More"} arrow={true}/>
+        
+          
+          <CodeBlocks left={true} sequence={`<!DOCTYPE html>\n<html lang = "en">\n<head>\n<title>This is my page</title>\n</head>\n<body>\n<h1><a href="/"> Header </a></h1>\n<nav><a href="one/"> One </a>\n<a href="two/"> Two </a>\n</nav>\n</body>`}
+          button1={"Try it Youself"} button2={"Learn More"} arrow={true} 
+          gradient={"codeblock1"} s1={"Unlock your"} s2={"coding potential"} s3={"with our online courses."}
+            s4={"Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you."}
+            color={"text-yellow-25"}
+
+          />
+
+          <CodeBlocks left={false} sequence={`import React from 'react';\nimport CtnButton from './Button';\nimport TypeAnimation from 'react-type'\nimport { FaArrowRight } from "react-icons/fa";\n\nconst Home = () => {\nreturn (\n<div> Home </div>\n)\n}\nexport default Home;`}
+            button1={"Continue Lesson"} button2={"Learn More"} arrow = {true} gradient={"codeblock2"}
+            s1={"Start"} s2={`coding \n in seconds`} s3={""} s4={"Go ahead, give it a try. Our hands-on learning environment means you'll be writing real code from your very first lesson."}
+            color={"text-white"}
+
+          />
       </div>
 
     </div >
