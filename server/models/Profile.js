@@ -14,6 +14,10 @@ const profileSchema = new mongoose.Schema({
     contactNo:{
         type: Number,
         trim: true
+    },
+    countryCode:{
+        type: String,
+        required: true,
     }
 
 })

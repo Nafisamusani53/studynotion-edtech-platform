@@ -36,9 +36,9 @@ cloudinaryConnect();
 
 // mount the routes
 app.use('/api/v1/auth', userRoutes);
-app.use('api/v1/profile', profileRoutes)
-app.use('api/v1/course', courseRoutes)
-app.use('api/v1/payment', paymentRoutes)
+app.use('/api/v1/profile', profileRoutes)
+app.use('/api/v1/course', courseRoutes)
+app.use('/api/v1/payment', paymentRoutes)
 
 // default route
 app.get('/', (req,res) => {
@@ -49,7 +49,7 @@ app.get('/', (req,res) => {
 })
 
 // start the app
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 4000
 app.listen(port , ()=>{
     console.log("App started")
 })

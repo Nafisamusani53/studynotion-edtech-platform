@@ -61,3 +61,6 @@ code {
   filter: blur(34px);
   transform: matrix(1, 0, -0.03, 1, 0, 0);
 }
+.homepage-bg{
+  background:url('./assests/bghome.de04eae287ff1d29f0b1.svg');
+}

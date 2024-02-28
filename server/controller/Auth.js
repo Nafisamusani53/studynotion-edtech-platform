@@ -1,8 +1,10 @@
 const bcrypt = require('bcrypt')
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const Profile = require('../models/Profile')
 // const otp = require('../models/OTP');
 const OTP = require('../models/OTP');
+const otpGenerator = require('otp-generator');
 // import { generateKey, hotp } from "otp-io";
 // import { hmac, randomBytes } from "otp-io/crypto";
 require('dotenv').config();
@@ -12,7 +14,7 @@ require('dotenv').config();
 let otpCounter = 0;
 exports.sendOTP = async(req, res) => {
     try{
-        const email = req.body.email;
+        const {email} = req.body;
 
         if(!email){
             return res.status(401).json({
@@ -91,7 +93,8 @@ exports.signup = async(req, res) => {
             password, 
             confirmPassword,
             otp,
-            role
+            role,
+            countryCode,
         } = req.body
 
         if(
@@ -100,7 +103,9 @@ exports.signup = async(req, res) => {
             !email ||
             !password ||
             !confirmPassword||
-            !otp) {
+            !otp ||
+            !countryCode ||
+            !contactNo) {
 
             return res.status(404).json({
                 success : false,
@@ -126,38 +131,42 @@ exports.signup = async(req, res) => {
         }
 
         //find most recent OTP for the email
-        const checkOTP = await OTP.findOne({ email }).sort({ createdAt: -1 }).limit(1);
-
-        console.log('Response: ', response);
+        const checkOTP = await OTP.findOne({ email }).sort({ createdAt: -1 });
         //validate OTP
-        if(checkOTP.length === 0){
-            //OTP not found
+        // if(checkOTP.length === 0){
+        //     //OTP not found
+        //     return res.status(400).json({
+        //         success: false,
+        //         message: "OTP not found"
+        //     })
+        // }
+        // else if(otp !== checkOTP){  // checkOTP[0].otp
+        //     //Invalid OTP
+        //     return res.status(401).json({
+        //         success: false,
+        //         message: "OTP does not match"
+        //     })
+        // }
+        if (!checkOTP || otp !== checkOTP.otp) {
             return res.status(400).json({
                 success: false,
-                message: "OTP not found"
-            })
-        }
-        else if(otp !== checkOTP){  // checkOTP[0].otp
-            //Invalid OTP
-            return res.status(401).json({
-                success: false,
-                message: "OTP does not match"
-            })
+                message: "Invalid OTP"
+            });
         }
 
         //Hash Password
         const hashPassword = await bcrypt.hash(password ,10)
 
         //Create the user
-        let approved = '';
-        approved === 'Instructor' ? (approved = false)  : (approved = true);
+        let approved = role === 'Instructor' ? false  : true;
 
         //create the additional profile for user
         const profileDetails = await Profile.create({
-            gender: null,
-            dateOfBirth: null,
-            about: null,
-            contactNo: contactNo
+            gender: "",
+            dateOfBirth: "",
+            about: "",
+            contactNo: contactNo,
+            countryCode: countryCode
         })
 
         let user = await User.create({
@@ -191,11 +200,12 @@ exports.signup = async(req, res) => {
 
 // login
 exports.login = async(req,res) => {
+    console.log("login controller")
     try{
-        const {email, pass} = req.body;
+        const {email, password} = req.body;
 
         // email or password not entered
-        if(!email || !pass){
+        if(!email || !password){
             //Return 400 Bad Request status code with error message
             return res.status(400).json({
                 success : false,
@@ -203,8 +213,10 @@ exports.login = async(req,res) => {
             })
         }
 
+        console.log(1)
+
         // check if the email exist or not
-        const user = await User.findOne({email});
+        let user = await User.findOne({email});
         if(!user){
             //Return 401 unauthorized status code with error message
             return res.status(401).json({
@@ -213,8 +225,9 @@ exports.login = async(req,res) => {
             })
         }
 
+        console.log(2)
         // Now match the password
-        if(await bcrypt.compare(pass, user.password)){
+        if(await bcrypt.compare(password, user.password)){
             //Generate JWT
             const payload = {
                 email: user.email,
@@ -225,16 +238,18 @@ exports.login = async(req,res) => {
                 expiresIn: '2h'
             })
 
+            console.log(3)
             //save token to user document in database
             user = user.toObject()
             user.token = token
             user.password = undefined
 
+            console.log(4)
             const options = {
-                expires : Date.now() + 3*24*60*60*1000,
+                maxAge : 3*24*60*60*1000,
                 httpOnly: true,
             }
-            res.cookies("token", token, options).status(200).json({
+            res.cookie("token", token, options).status(200).json({
                 success: true,
                 token,
                 user,
@@ -242,7 +257,8 @@ exports.login = async(req,res) => {
             })
         }
         else{
-            return res.status(401).josn({
+            console.log(5)
+            return res.status(401).json({
                 success: false,
                 message: "Incorrect password or email"
             })
@@ -250,6 +266,7 @@ exports.login = async(req,res) => {
 
     }
     catch(err){
+        console.log(6)
         res.status(500).json({
             success: false,
             message: err.message
@@ -257,6 +274,8 @@ exports.login = async(req,res) => {
     }
 }
 
+// also need to update the token or need to send the user to login page for verification
+// the best option for is to send the user to the login page for verification 
 exports.changePassword = async(req, res) => {
     try{
         //Get user data from req.user
