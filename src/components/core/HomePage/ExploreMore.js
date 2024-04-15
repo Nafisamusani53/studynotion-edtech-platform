@@ -26,7 +26,7 @@ const ExploreMore = () => {
             <div className='flex flex-col gap-4'>
                 <p className="text-center text-4xl font-semibold">
                     Unlock the
-                    <HighlightText text={"Power of Code"} />
+                    <HighlightText text={"Power of Code"} bg={"bg-gradient-to-b from-[#1FA2FF] via-[#12D8FA] to-[#A6FFCB]"}/>
                 </p>
                 <h6 className="-mt-3 text-center text-lg font-bold text-richblack-300">
                     Learn to Build Anything You Can Imagine

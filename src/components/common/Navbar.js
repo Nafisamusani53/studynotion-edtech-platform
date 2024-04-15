@@ -4,36 +4,39 @@ import logo from "../../assests/download.png"
 import { NavbarLinks } from "../../data/navbar-links"
 import { ACCOUNT_TYPE } from "../../utils/constant"
 import { IoCartOutline } from "react-icons/io5";
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ProfileDropdown from '../core/Auth/ProfileDropdown'
 import { categories } from '../../services/apis'
 import { apiConnector } from '../../services/apiConnector'
 import toast from 'react-hot-toast'
-import axios from 'axios'
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown,  IoIosSearch } from "react-icons/io";
+
+
 
 const Navbar = () => {
 
     const { token } = useSelector((state) => state.auth);
     const { user } = useSelector((state) => state.profile);
     const { totalItems } = useSelector((state) => state.cart);
-
+    const dispatch = useDispatch();
     const [subLinks, setSubLinks] = useState([]);
 
+
+    console.log(token);
+    console.log(user);
     const fetchData = async() => {
         try{
             const result = await apiConnector("get", categories.GET_ALL_CATEGORY)
-            // const result = await axios.get("http://localhost:4000/api/v1/course/getAllCategory")
             toast.success("fetched the data")
             setSubLinks(result.data.data);
-            console.log(subLinks)
+            
         }
         catch(error){
             console.error("Error config:", error.config);
             toast.error("Error while fetching categories");
         }
     }
-
+    console.log(subLinks);
     useEffect(() => {
         fetchData();
     },[])
@@ -45,7 +48,8 @@ const Navbar = () => {
 
 
     return (
-        <div className='flex h-14 items-center justify-center border-b-[1px] border-richblack-700'>
+        <header className={`flex h-14 items-center justify-center border-b-[1px] border-richblack-700
+        ${location.pathname === "/" ? "bg-richblack-900" : "bg-richblack-800"}`}>
             <div className='flex w-11/12 max-w-maxContent items-center justify-between'>
                 <Link to={"/"}>
                     <img src={logo} width={160} loading='lazy' />
@@ -96,11 +100,13 @@ const Navbar = () => {
                 </nav>
 
                 <div className='flex gap-4 items-center justify-center text-richblack-100 text-base'>
-                    {/*log out */}
+                    <Link to={"search"}>
+                        <IoIosSearch className='text-2xl'/>
+                    </Link>
                     {   
-                        user && user?.role !== ACCOUNT_TYPE.INSTRUCTOR && (
+                       token && token!== null && user && user?.role === ACCOUNT_TYPE.STUDENT && (
                             <Link to={"/dashboard/cart"} className='relative'>
-                                <IoCartOutline />
+                                <IoCartOutline className='text-2xl'/>
                                 {
                                     totalItems > 0 && (
                                         <span className='absolute rounded-full bg-yellow-300 p-2 '>
@@ -112,9 +118,9 @@ const Navbar = () => {
                         )
                     }
                     {
-                        token === null && (
+                        (token === null) && (
                            
-                            <button className='border-[1px] border-richblack-700 bg-richblack-800 rounded-md px-3 py-2'>
+                            <button className='border-[1px] border-richblack-700 bg-richblack-800 rounded-md px-3 py-2 cursor-pointer'>
                                 <Link to={"/login"}>
                                     Log in
                                 </Link>
@@ -123,7 +129,7 @@ const Navbar = () => {
                     }
                     {
                         token === null && (
-                            <button className='border-[1px] border-richblack-700 bg-richblack-800 rounded-md px-3 py-2'>
+                            <button className='border-[1px] border-richblack-700 bg-richblack-800 rounded-md px-3 py-2 cursor-pointer'>
                                 <Link to={"/signup"}>
                                     Sign up
                                 </Link>
@@ -137,7 +143,7 @@ const Navbar = () => {
                     }
                 </div>
             </div>
-        </div>
+        </header>
     )
 }
 

@@ -9,9 +9,9 @@ const otpGenerator = require('otp-generator');
 // import { hmac, randomBytes } from "otp-io/crypto";
 require('dotenv').config();
 
+
 // send OTP
 // need to check this controller
-let otpCounter = 0;
 exports.sendOTP = async(req, res) => {
     try{
         const {email} = req.body;
@@ -109,7 +109,15 @@ exports.signup = async(req, res) => {
 
             return res.status(404).json({
                 success : false,
-                message: "Fill the detail properly"
+                message: "Fill the detail properly",
+                data: {firstName,
+                    lastName,
+                    email,
+                    password,
+                    confirmPassword,
+                    otp,
+                    countryCode,
+                    contactNo}
             })
         }
 
@@ -216,7 +224,7 @@ exports.login = async(req,res) => {
         console.log(1)
 
         // check if the email exist or not
-        let user = await User.findOne({email});
+        let user = await User.findOne({email}).populate("profile");
         if(!user){
             //Return 401 unauthorized status code with error message
             return res.status(401).json({
@@ -248,6 +256,8 @@ exports.login = async(req,res) => {
             const options = {
                 maxAge : 3*24*60*60*1000,
                 httpOnly: true,
+                secure: true,
+                sameSite: 'None'
             }
             res.cookie("token", token, options).status(200).json({
                 success: true,
@@ -276,84 +286,3 @@ exports.login = async(req,res) => {
 
 // also need to update the token or need to send the user to login page for verification
 // the best option for is to send the user to the login page for verification 
-exports.changePassword = async(req, res) => {
-    try{
-        //Get user data from req.user
-        const id = req.user.id;
-
-        // fetch data from request
-        const {oldpassword, password, confirmPassword} = req.body;
-        
-        // validate data
-        if(!oldpassword || !password || !confirmPassword){
-            return res.status(400).json({
-                success: false,
-                message: "Please fill the details properly"
-            })
-        }
-
-        // check if pass and confirmpass matches or not
-        if(password !== confirmPassword){
-            // didn't matched
-            return res.status(401).json({
-                success: false,
-                message: "Password and ConfirmPassword dose not match"
-            })
-        }
-
-        // find user
-        const user = await User.findById(id);
-        
-        // compare old and new password
-        if(await bcrypt.compare(oldpassword, user.password)){
-            // password matched
-
-            // hash the new password
-            const hashPassword = await bcrypt.hash(password ,10)
-
-            // update the password with new one
-            const updatedUser = await  User.findByIdAndUpdate(id, {
-                password : hashPassword
-            },{new: true})
-            
-            // send email
-            try {
-                const emailResponse = await mailSender(
-                    updatedUser.email,
-                    `Password Updated Successfully for ${updatedUser.firstName} ${updatedUser.lastName}`,
-                    passwordUpdated(
-                        updatedUser.email,
-                        updatedUser.firstName,
-                    )
-                )
-                console.log('Email sent successfully................', emailResponse);
-            }
-            catch (error) {
-                //if there's an error sending the email, log the error and return a 500 (Internal Server Error) error
-                console.log('Error Occurred While Sending Email: ', error);
-                return res.status(500).json({
-                    success: false,
-                    message: 'Error Occurred While Sending Email',
-                    error: error.message,
-                });
-            }
-            return res.status(200).json({
-                success:true,
-                message : "Password Updated"
-            })
-            
-        }
-        //old password does not match, return a 401 (unauthorized) error
-        return res.status(401).json({
-            success: false,
-            message: "Invalid Password"
-        })
-        
-    }
-    catch(err){
-        res.status(500).json({
-            success: false,
-            message: err.message
-        })
-    }
-}

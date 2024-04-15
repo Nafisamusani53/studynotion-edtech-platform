@@ -2,6 +2,7 @@ import React from "react";
 import HighlightText from "./HighlightText";
 import CtnButton from "./CtnButton";
 import Editor from "./Editor";
+import { FaArrowRight } from "react-icons/fa";
 
 const CodeBlocks = ({ left, sequence, button1, button2, arrow, gradient,s1,s2,s3,s4,color,linkto }) => {
   return (
@@ -15,6 +16,7 @@ const CodeBlocks = ({ left, sequence, button1, button2, arrow, gradient,s1,s2,s3
           {s1}
           <HighlightText
             text={s2}
+            bg={"bg-gradient-to-b from-[#1FA2FF] via-[#12D8FA] to-[#A6FFCB]"}
           />
           {s3}
         </p>
@@ -23,7 +25,9 @@ const CodeBlocks = ({ left, sequence, button1, button2, arrow, gradient,s1,s2,s3
         </p>
         <div>
           <div className="flex gap-7 mx-auto mt-5">
-            <CtnButton text={button1} flag={true} arrow={arrow} linkto={linkto}/>
+            <CtnButton text={button1} flag={true} linkto={linkto}>
+            <FaArrowRight/>
+          </CtnButton>
             <CtnButton text={button2} flag={false} linkto={linkto}/>
           </div>
         </div>

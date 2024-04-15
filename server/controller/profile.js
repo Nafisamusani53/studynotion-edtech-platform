@@ -3,6 +3,10 @@ const Profile = require('../models/Profile')
 const User = require('../models/User')
 const { deleteFile } = require("../utils/deleteFIle")
 const { imageUploader } = require("../utils/imageUploader")
+const {passwordUpdated} = require('../mail/templates/passwordUpdate')
+const bcrypt = require('bcrypt')
+const {mailSender}  = require('../utils/mailSender')
+const mongoose = require("mongoose")
 
 // we have already created profile at the time of sign up
 // so we only to updates the profile
@@ -10,36 +14,45 @@ const { imageUploader } = require("../utils/imageUploader")
 exports.updateProfile = async (req, res) => {
     try {
         // fetch data
-        const { dateOfBirth = "", about = "", gender, contactNo = "" } = req.body
+        const { firstName, lastName, dateOfBirth , about , gender, contactNo  } = req.body
         const id = req.user.id
 
         // validate data
-        if (!gender || !id) {
+        if (!firstName || !lastName || !gender || !dateOfBirth || !about || !contactNo || !id) {
             return res.status(400).json({
                 success: false,
                 message: "Value missing"
             })
         }
 
+        let newcontactNo = parseFloat(contactNo, 10);
+
+        const session = await mongoose.startSession();
+        session.startTransaction();
+
         // find profile from user id
         const user = await User.findById(id);
-        const profile = await Profile.findById(user.profile);
+        const profile = await Profile.findByIdAndUpdate(user.profile, 
+            {dateOfBirth,
+            about,
+            contactNo : newcontactNo,
+            gender
+        },{new: true , session});
 
-        profile.dateOfBirth = dateOfBirth;
-        profile.about = about;
-        if (contactNo !== "") {
-            profile.contactNo = contactNo;
-        }
-        profile.gender = gender;
+        const updatedUser = await User.findByIdAndUpdate(id , {
+            firstName,
+            lastName
+        }, {new: true , session}).populate("profile")
+        
 
-        // update profile
-        await profile.save();
+        await session.commitTransaction()
+        session.endSession();
 
         // return response
         return res.status(200).json({
             success: true,
             message: "Profile updated successfully",
-            profile,
+            updatedUser,
         })
     } catch (err) {
         res.status(500).json({
@@ -103,7 +116,7 @@ exports.getAllUserDetails = async (req, res) => {
         const userId = req.user.id
 
         // find the user and populate the profile
-        const userProfile = await User.findOne({ _id: userId }, { profile: true })
+        const userProfile = await User.findOne({ _id: userId })
             .populate("profile")
             .exec()
 
@@ -117,7 +130,7 @@ exports.getAllUserDetails = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Profile fetched successfully",
-            userProfile
+            user:userProfile
         })
     } catch (err) {
         res.status(500).json({
@@ -128,42 +141,125 @@ exports.getAllUserDetails = async (req, res) => {
     }
 }
 
-exports.updateDisplayPicture = async (req, res) => {
+exports.updateDisplayPicture = async(req, res) => {
+    console.log("called")
     try {
         // fetch the id
         const userId = req.user.id
+        console.log("user")
 
         // fetch the image
-        const { image } = req.file;
+        const { image } = req.files;
+        console.log("image")
 
         // find the user
-        const user = await User.findById({ userId }, { image: true });
+        const user = await User.findById(userId , { image: true });
+        console.log("found user")
 
         // delete it from the cloudinary
-        const deleted = await deleteFile(user.image);
+        const deleted = await deleteFile(user.image, process.env.FOLDER_NAME);
+        console.log(deleted)
+        console.log("deleted previous file")                                                                       
 
         // now upload the file to cloudinary
         const uploadImage = await imageUploader(image, process.env.FOLDER_NAME, 1000,
             1000)
+        console.log("uploaded the new file")
+        console.log(uploadImage)
 
         // Now update the user
-        const updateProfile = await User.findByIdAndUpdate({ userId },
+        const updateProfile = await User.findByIdAndUpdate(userId ,
             { image: uploadImage.secure_url },
             { new: true })
+            console.log("updated image in the user documnet")
+            console.log(updateProfile)
 
         return res.status(200).json({
             success: true,
             message: "Profile image updated successfully",
             data: updateProfile.image
         })
-
-
     }
-    catch (err) {
+    catch(err) {
         res.status(500).json({
-            success: true,
+            success: false,
             message: "Failed to update Profile image",
             error: err.message
+        })
+    }
+}
+
+exports.changePassword = async(req, res) => {
+    try{
+        //Get user data from req.user
+        const id = req.user.id;
+
+        // fetch data from request
+        const {currentPassword, newPassword} = req.body;
+        
+        // validate data
+        if(!currentPassword || !newPassword){
+            return res.status(400).json({
+                success: false,
+                message: "Please fill the details properly"
+            })
+        }
+
+        // check if pass and confirmpass matches or not
+
+        // find user
+        const user = await User.findById(id);
+        
+        // compare old and new password
+        if(await bcrypt.compare(currentPassword, user.password)){
+            // password matched
+
+            // hash the new password
+            const hashPassword = await bcrypt.hash(newPassword ,10)
+
+            // update the password with new one
+            const updatedUser = await  User.findByIdAndUpdate(id, {
+                password : hashPassword
+            },{new: true})
+            
+            // send email
+            try {
+                const emailResponse = await mailSender(
+                    updatedUser.email,
+                    `Password Updated Successfully for ${updatedUser.firstName} ${updatedUser.lastName}`,
+                    passwordUpdated(
+                        updatedUser.email,
+                        updatedUser.firstName,
+                    )
+                )
+                console.log('Email sent successfully................', emailResponse);
+            }
+            catch (error) {
+                //if there's an error sending the email, log the error and return a 500 (Internal Server Error) error
+                console.log('Error Occurred While Sending Email: ', error);
+                return res.status(500).json({
+                    success: false,
+                    message: 'Error Occurred While Sending Email',
+                    error: error.message,
+                });
+            }
+            return res.status(200).json({
+                success:true,
+                message : "Password Updated"
+            })
+            
+        }
+        //current password does not match, return a 401 (unauthorized) error
+        return res.status(401).json({
+            success: false,
+            message: "Invalid Password"
+        })
+        
+    }
+    catch(err){
+        res.status(500).json({
+            success: false,
+            message: err.message
         })
     }
 }

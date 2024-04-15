@@ -1,8 +1,14 @@
 // Authentication
-exports.auth = async(req,res, next) => {
+const jwt = require('jsonwebtoken')
+console.log("middleware")
+exports.auth = (req,res, next) => {
     try{
+        console.log("hello")
         const token = req.header("Authorization").replace("Bearer ", "") || req.cookies.token || req.body.token;
+        console.log("cookies")
+        console.log(token)
         if(!token){
+            console.log("no token")
             return res.status(401).json({
                 success: false,
                 message : "Invalid user or token Missing"
@@ -10,13 +16,18 @@ exports.auth = async(req,res, next) => {
         }
 
         try{
-        const decode = await jwt.verify(token, process.env.JWT_SECRET) 
+            console.log("try block in auth")
+        const decode = jwt.verify(token, process.env.JWT_SECRET)
+        console.log("token decoded") 
         req.user = decode
+        console.log(decode)
+        console.log("auth called")
         next();
         }
         catch(error){
+            console.log(error.message)
             return res.status(403).json({
-                success: true,
+                success: false,
                 message: error.message
             })
         }

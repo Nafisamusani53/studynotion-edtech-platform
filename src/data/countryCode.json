@@ -189,7 +189,15 @@
     },
     {
         "country": "Dominican Republic",
-        "code": "+1-809, +1-829, +1-849"
+        "code": "+1-809"
+    },
+    {
+        "country": "Dominican Republic",
+        "code": "+1-829"
+    },
+    {
+        "country": "Dominican Republic",
+        "code": "+1-849"
     },
     {
         "country": "East Timor",

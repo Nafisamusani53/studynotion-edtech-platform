@@ -44,7 +44,7 @@ exports.createCourse = async(req,res) => {
 
         //check if the user is an instructor
         const instructorDetails = await User.findById(userId, {
-            accountType: "Instructor",
+            role: "Instructor",
         });
 
         // Verify that userId and instructorDetails._id are same or different

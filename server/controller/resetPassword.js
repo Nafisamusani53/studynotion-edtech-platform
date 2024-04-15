@@ -24,7 +24,7 @@ exports.resetPasswordToken = async(req,res) => {
         }
 
         //generate token
-        const token = crypto.randomUUID()
+        const token = crypto.randomUUID(20).toString("hex");
 
         const update = await User.findOneAndUpdate({email: email}, {
             token: token,

@@ -104,7 +104,7 @@ exports.updateSubSection = async(req, res) => {
         }
         
         // update subSection
-        await subSection.save();
+        const updateSubSection= await subSection.save();
         
         // return response
         return res.status(200).json({

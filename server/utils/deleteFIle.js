@@ -10,22 +10,34 @@ function extractPublicId(cloudinaryUrl) {
     console.log(uploadIndex)
   
     // The public ID is the next segment in the URL after "version"
-    if (uploadIndex !== -1 && uploadIndex === parts.length - 3) {
-      return parts[parts.length - 1].split(".")[0];
+    if (uploadIndex !== -1) {
+      const publicId =  parts[parts.length - 1].split(".")[0];
+      return publicId;
     }
     // If "version" is not found or there's no segment after "version", return null
     return null;
   }
-exports.deleteFile = async(file) => {
+exports.deleteFile = async(file, folder) => {
     try{
-       const publicId = extractPublicId(file)
+      let publicId = extractPublicId(file);
+      console.log(publicId)
+      publicId = `${folder}/${publicId}`
+      console.log(publicId)
 
        if(publicId){
-            return await cloudinary.uploader.v2.destroy(publicId);  
+        const result = await cloudinary.uploader.destroy(publicId);
+        return result;
        }
+       if (result.result === 'ok') {
+        return({ message: 'File deleted successfully' });
+      } else {
+        return({ message: 'Failed to delete file' });
+      }
     }
     catch(err){
-        return res.status(500).json({
+      console.log("deletion failed")
+      console.log(err.message)
+        return ({
             success: false,
             message: "Failed to delete media",
             error: err.message

@@ -1,19 +1,19 @@
 const cloudinary = require('cloudinary').v2
-exports.imageUploader = async(file, folder, hieght, quality) => {
+exports.imageUploader = async(file, folder, height, quality) => {
     try{
         const options = {folder};
-        if(hieght){
+        if(height){
             options.height = height
         }
         if(quality){
             options.quality = quality
         }
 
-        options.resourse_type = "auto"
-        return await cloudinary.v2.uploader(file.tempFilePath, options)
+        options.resource_type = "auto"
+        return await cloudinary.uploader.upload(file.tempFilePath, options)
     }
     catch(err){
-        return res.status(500).json({
+        return({
             success: false,
             message: "Failed to upload media",
             error: err.message

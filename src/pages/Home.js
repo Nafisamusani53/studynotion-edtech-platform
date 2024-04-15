@@ -13,9 +13,9 @@ import Carousel from "../components/core/HomePage/Carousel";
 
 const Home = () => {
   return (
-    <div>
+    <main>
       {/* Section - 1 */}
-      <div
+      <section
         className=" mx-auto flex w-11/12 max-w-maxContent flex-col 
       items-center justify-between gap-8 text-white"
       >
@@ -39,7 +39,7 @@ const Home = () => {
 
         <p className="text-center text-4xl font-semibold">
           Empower Your Future with
-          <HighlightText text={"Coding Skills"} />
+          <HighlightText text={"Coding Skills"} bg={"bg-gradient-to-b from-[#1FA2FF] via-[#12D8FA] to-[#A6FFCB]"}/>
         </p>
         <p className="-mt-3 w-[90%] text-center text-lg font-bold text-richblack-300">
           With our online coding courses, you can learn at your own pace, from
@@ -50,7 +50,7 @@ const Home = () => {
 
         <div className="flex gap-7 mx-auto">
           <CtnButton text={"Learn More"} flag={true} linkto={"/signup"} />
-          <CtnButton text={"Book a Demo"} flag={false} linkto={"/login"} />
+          <CtnButton text={"Book a Demo"} flag={false} linkto={"/login"}/>
         </div>
 
         <div className=" mx-3 my-7 shadow-[10px_-5px_50px_-5px] shadow-blue-200">
@@ -69,7 +69,6 @@ const Home = () => {
           sequence={`<!DOCTYPE html>\n<html lang = "en">\n<head>\n<title>This is my page</title>\n</head>\n<body>\n<h1><a href="/"> Header </a></h1>\n<nav><a href="one/"> One </a>\n<a href="two/"> Two </a>\n</nav>\n</body>`}
           button1={"Try it Youself"}
           button2={"Learn More"}
-          arrow={true}
           gradient={"codeblock1"}
           s1={"Unlock your"}
           s2={"coding potential"}
@@ -86,7 +85,6 @@ const Home = () => {
           sequence={`import React from 'react';\nimport CtnButton from './Button';\nimport TypeAnimation from 'react-type'\nimport { FaArrowRight } from "react-icons/fa";\n\nconst Home = () => {\nreturn (\n<div> Home </div>\n)\n}\nexport default Home;`}
           button1={"Continue Lesson"}
           button2={"Learn More"}
-          arrow={true}
           gradient={"codeblock2"}
           s1={"Start"}
           s2={`coding \n in seconds`}
@@ -99,18 +97,19 @@ const Home = () => {
         />
 
         <ExploreMore/>
-      </div>
+      </section>
 
       {/* Section-2 */}
-      <div className="bg-[#F9F9F9] flex flex-col items-center font-inter pb-14">
+      <section className="bg-[#F9F9F9] flex flex-col items-center font-inter pb-14">
         <div className="homepage-bg w-full pt-36">
           <div className="flex gap-7 mx-auto items-center justify-center my-16">
             <CtnButton
               text={"Explore Full Catalogue"}
               flag={true}
-              arrow={true}
               linkto={"/signup"}
-            />
+            >
+            <FaArrowRight/>
+            </CtnButton>
             <CtnButton text={"Learn More"} flag={false} linkto={"/signup"} />
           </div>
         </div>
@@ -118,7 +117,7 @@ const Home = () => {
         <div className="flex flex-row justify-between gap-10 m-16">
           <div className="text-4xl font-semibold text-richblack-800 w-[50%]">
             Get the skills you need for a
-            <HighlightText text={"job that is in demand."} />
+            <HighlightText text={"job that is in demand."} bg={"bg-gradient-to-b from-[#1FA2FF] via-[#12D8FA] to-[#A6FFCB]"}/>
           </div>
 
           <div className="flex flex-col gap-8 w-[40%] justify-start">
@@ -133,10 +132,10 @@ const Home = () => {
         <Timeline/>
 
         <LearningLanguageSection/>
-      </div>
+      </section>
 
       {/* Section - 3 */}
-      <div className="flex flex-col my-6 mx-14">
+      <section className="flex flex-col my-6 mx-14">
         <div className="flex my-6 gap-20 items-center justify-center tracking-wide">
           <div className="shadow-white shadow-[-20px_-20px_0px_0px] w-[50%] object-cover">
             <img src={instructor} />
@@ -145,7 +144,7 @@ const Home = () => {
           <div className="flex flex-col gap-10 w-[50%]">
             <p className="text-4xl font-semibold text-[#F1F2FF] w-[40%]">
               Become an
-              <HighlightText text={"instructor"} />
+              <HighlightText text={"instructor"} bg={"bg-gradient-to-b from-[#1FA2FF] via-[#12D8FA] to-[#A6FFCB]"}/>
             </p>
             <p className="text-md text-[#838894] tracking-wide w-[90%]">
               Instructors from around the world teach millions of students on
@@ -157,7 +156,9 @@ const Home = () => {
                 flag={true}
                 arrow={true}
                 linkto={"/signup"}
-              />
+              >
+              <FaArrowRight/>
+          </CtnButton>
           </div>
         </div>
 
@@ -166,8 +167,8 @@ const Home = () => {
           <h2 className="text-4xl font-bold text-richblack-5">Reviews from other learners</h2>
           <Carousel/>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 
