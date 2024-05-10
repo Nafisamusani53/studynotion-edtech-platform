@@ -33,7 +33,6 @@ const courseSchema = new mongoose.Schema({
     courseContent:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Section",
-        required:true,
     }],
     tag:{
         type: [String],
@@ -61,8 +60,8 @@ const courseSchema = new mongoose.Schema({
     },
     createdAt:{
         type: Date,
-        Date: Date.now
+        default: Date.now()
     }
-})
+},{timestamps: true})
 
 module.exports = mongoose.model("Course", courseSchema)

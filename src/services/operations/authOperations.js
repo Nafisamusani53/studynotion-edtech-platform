@@ -11,7 +11,7 @@ export const sendOTP = (email, navigate) => {
         const toastId = toast.loading("Loading...")
         try{
             console.log(email)
-            const result = await apiConnector("POST", auth.SEND_OTP, {email, checkUserPresent: true,});
+            const result = await apiConnector("POST", auth.SEND_OTP, {email});
             console.log(result);
 
             if(!result.data.success){
@@ -24,23 +24,24 @@ export const sendOTP = (email, navigate) => {
         catch(error){
             console.log("Error while sending otp");
             console.log(error)
+            console.log(error.message)
         }
         dispatch(setLoading(false));
         toast.dismiss(toastId);
     }
 }
-export const signup = (data, otp1, navigate) => {
+export const signup = (data, navigate) => {
     return async (dispatch) => {
         const toastId = toast.loading("Loading...")
         dispatch(setLoading(true));
         try{
-            const info = {...data};
-            const otp = parseInt(otp1);
-            info.otp = otp;
-            console.log("info")
-            console.log(info)
-            const result = await apiConnector("POST", auth.SIGNUP, info);
-            console.log(result)
+            // const info = {...data};
+            // const otp = parseInt(otp1);
+            // data.otp = otp;
+            console.log("data")
+            console.log(data)
+            const result = await apiConnector("POST", auth.SIGNUP, data);
+            console.log("signup result",result)
 
             if(!result.data.success){
                 throw new Error(result.data.message)
@@ -51,8 +52,8 @@ export const signup = (data, otp1, navigate) => {
         }
         catch(error){
             toast.error("Failed to create account")
-            console.log("Error in axios")
-            console.error(error)
+            console.log(error)
+            console.log(error.message)
         }
         dispatch(setLoading(false))
         toast.dismiss(toastId)

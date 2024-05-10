@@ -103,9 +103,7 @@ exports.signup = async(req, res) => {
             !email ||
             !password ||
             !confirmPassword||
-            !otp ||
-            !countryCode ||
-            !contactNo) {
+            !otp) {
 
             return res.status(404).json({
                 success : false,
@@ -173,8 +171,8 @@ exports.signup = async(req, res) => {
             gender: "",
             dateOfBirth: "",
             about: "",
-            contactNo: contactNo,
-            countryCode: countryCode
+            contactNo: contactNo ? contactNo : "",
+            countryCode: countryCode ? countryCode : ""
         })
 
         let user = await User.create({

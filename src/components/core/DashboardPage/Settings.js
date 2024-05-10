@@ -1,9 +1,9 @@
 
 import { RiDeleteBinLine } from "react-icons/ri";
 
-import UpdateProfie from './UpdateProfie';
-import EditProfile from './EditProfile';
-import ChangePassword from "./ChangePassword";
+import UpdateProfie from './Settings/UpdateProfie';
+import EditProfile from './Settings/EditProfile';
+import ChangePassword from "./Settings/ChangePassword";
 
 const Settings = () => {
 

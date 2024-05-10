@@ -19,3 +19,21 @@ export const profile = {
     CHANGE_PASSWORD : BASE_URL + "/profile/changePassword",
 
 }
+export const contactUs = {
+    CONTACT_US_API : BASE_URL + "/reach/contact",
+};
+
+export const course = {
+    CREATE_COURSE : BASE_URL +  "/course/createCourse",
+    EDIT_COURSE : BASE_URL +  "/course/editCourse",
+    CREATE_SECTION : BASE_URL + "/course/addSection",
+    INSTRUCTOR_COURSE : BASE_URL + "/course/getInstructorCourses",
+    DELETE_COURSE : BASE_URL + "/course/deleteCourse",
+    GET_FULL_COURSE_DETAILS : BASE_URL + "/course/getFullCourseDetails",
+    UPDATE_SECTION : BASE_URL +  "/course/updateSection",
+    DELETE_SECTION : BASE_URL + "/course/deleteSection",
+    DELETE_SUBSECTION : BASE_URL + "/course/deleteSubSection",
+    CREATE_SUBSECTION : BASE_URL + "/course/addSubSection",
+    UPDATE_SUBSECTION : BASE_URL + "/course/updateSubSection",
+    PUBLISH_COURSE : BASE_URL + "/course/publishCourse",
+}

@@ -22,6 +22,7 @@ exports.auth = (req,res, next) => {
         req.user = decode
         console.log(decode)
         console.log("auth called")
+        console.log("In auth : req", req.body)
         next();
         }
         catch(error){
@@ -69,7 +70,8 @@ exports.isInstructor = async(req,res, next)=>{
                 message: "This is protected route for Instructor only"
             })
         }
-        next()
+        console.log("calling the next function")
+        next();
     }
     catch(err){
         res.status(500).json({

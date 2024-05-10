@@ -15,7 +15,7 @@ import { IoEyeOutline } from "react-icons/io5";
 const Signup = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const {signupData} = useSelector((state) => state.auth)
     const[data, setData] = useState({
         firstName:"",
         lastName:"",
@@ -42,6 +42,7 @@ const Signup = () => {
         event.preventDefault();
         data.role = role;
         dispatch(setSignupData(data));
+        console.log("In SignUP form",signupData)
 
         dispatch(sendOTP(data.email, navigate));
         // try {

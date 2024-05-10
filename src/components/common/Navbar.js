@@ -1,14 +1,11 @@
-import React, {useState,useEffect} from 'react'
+import React from 'react'
 import { Link, matchPath, useLocation } from 'react-router-dom'
 import logo from "../../assests/download.png"
 import { NavbarLinks } from "../../data/navbar-links"
 import { ACCOUNT_TYPE } from "../../utils/constant"
 import { IoCartOutline } from "react-icons/io5";
-import { useDispatch, useSelector } from 'react-redux'
+import {  useSelector } from 'react-redux'
 import ProfileDropdown from '../core/Auth/ProfileDropdown'
-import { categories } from '../../services/apis'
-import { apiConnector } from '../../services/apiConnector'
-import toast from 'react-hot-toast'
 import { IoIosArrowDown,  IoIosSearch } from "react-icons/io";
 
 
@@ -18,28 +15,13 @@ const Navbar = () => {
     const { token } = useSelector((state) => state.auth);
     const { user } = useSelector((state) => state.profile);
     const { totalItems } = useSelector((state) => state.cart);
-    const dispatch = useDispatch();
-    const [subLinks, setSubLinks] = useState([]);
+    const {categories} = useSelector((state)=> state.category)
 
 
     console.log(token);
     console.log(user);
-    const fetchData = async() => {
-        try{
-            const result = await apiConnector("get", categories.GET_ALL_CATEGORY)
-            toast.success("fetched the data")
-            setSubLinks(result.data.data);
-            
-        }
-        catch(error){
-            console.error("Error config:", error.config);
-            toast.error("Error while fetching categories");
-        }
-    }
-    console.log(subLinks);
-    useEffect(() => {
-        fetchData();
-    },[])
+    
+    console.log(categories);
 
     const location = useLocation()
     const matchRoute = (route) => {
@@ -68,14 +50,14 @@ const Navbar = () => {
                                                 <p>{link.title}</p>
                                                 <IoIosArrowDown/>
                                                 
-                                                <div className='absolute top-10 pt-5 p-2 flex flex-col rounded-md bg-richblack-5 
+                                                <div className='z-[500] absolute top-10 pt-5 p-2 flex flex-col rounded-md bg-richblack-5 
                                                 invisible opacity-0 transition-all duration-200 group-hover:visible 
                                                 group-hover:opacity-100 lg:w-72 -left-[80%] gap-2'> 
 
-                                                    <div className=' absolute w-6 h-6 rounded-sm rotate-45 bg-richblack-5 
+                                                    <div className=' z-[1000] absolute w-6 h-6 rounded-sm rotate-45 bg-richblack-5 
                                                     left-[40%] translate-x-[5%] -translate-y-[48%] top-0'/>
                                                     {
-                                                        subLinks.map((link, index) => (
+                                                        categories.map((link, index) => (
                                                             <Link to={`/catalog/${link.categoryName.toLowerCase().replace(" ", "-")}`} key={index}>
                                                                 <p className='text-richblack-900 hover:bg-richblack-50 rounded-md px-2 py-2'> {link.categoryName}</p>
                                                             </Link>

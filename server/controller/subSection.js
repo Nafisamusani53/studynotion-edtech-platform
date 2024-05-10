@@ -1,5 +1,8 @@
 const SubSection = require('../models/SubSection')
 const Section = require('../models/Section');
+const { deleteFile } = require('../utils/deleteFIle');
+const { imageUploader } = require('../utils/imageUploader');
+
 
 exports.createSubSection = async(req, res)=> {
     try{
@@ -7,7 +10,7 @@ exports.createSubSection = async(req, res)=> {
         const {sectionId, title, description} = req.body
 
         // fetch video from files
-        const video = req.files.video
+        const video = req.files.videoUrl
 
         // do data validation
         if(!sectionId || !title || !description || !video){
@@ -29,7 +32,7 @@ exports.createSubSection = async(req, res)=> {
         })
 
         // push sebsection id to the section
-        const updatedSection = await Section.findByIdAndUpdate({sectionId}, 
+        const updatedSection = await Section.findByIdAndUpdate(sectionId, 
             {
                 $push :{
                     subSection : subSection._id
@@ -40,7 +43,7 @@ exports.createSubSection = async(req, res)=> {
         return res.status(200).json({
             success: true,
             message: "Sub Section created successfully",
-            updatedSection
+            data: updatedSection
         })
     }
     catch(err){
@@ -56,10 +59,10 @@ exports.createSubSection = async(req, res)=> {
 exports.updateSubSection = async(req, res) => {
     try{
         // fetch data
-        const {title, description, subSectionId} = req.body;
+        const {title, description, subSectionId,sectionId} = req.body;
 
         // validate data
-        if(!subSectionId){
+        if(!subSectionId || !sectionId){
             return res.status(400).json({
                 success: false,
                 message: "Value missing"
@@ -75,27 +78,15 @@ exports.updateSubSection = async(req, res) => {
             subSection.description = description;
         }
 
+
         if(req.files && req.files.video !== undefined) {
             // delete the prev video if there
             if(subSection.videoUrl){
-                const publicId = subSection.videoUrl.split('/').at(-1).split('.')[0]
-                try {
-
-                    await cloudinary.uploader.v2.destroy(publicId);
-                } 
-                catch (err) {
-                    console.error('Error deleting file on Cloudinary');
-                    // Handle the error, log, and continue with the deletion process
-                    res.status(500).json({
-                        success: true,
-                        message: "Failed to create a Sub Section",
-                        error: err.message
-                    })
-                }
+                await deleteFile(subSection.videoUrl, process.env.FOLDER_NAME)
             }
             
             const video = req.files.video;
-            const uploadDetails = await uploadImageToCloudinary(
+            const uploadDetails = await imageUploader(
                 video,
                 process.env.FOLDER_NAME,
             )
@@ -106,11 +97,13 @@ exports.updateSubSection = async(req, res) => {
         // update subSection
         const updateSubSection= await subSection.save();
         
+        const section = await Section.findById(sectionId).populate("subSection").exec();
+        console.log(section)
         // return response
         return res.status(200).json({
             success: true,
             message: "Sub Section updated successfully",
-            updateSubSection
+            data: section
         })
     }
     catch(err){
@@ -141,20 +134,7 @@ exports.deleteSubSection = async(req, res) => {
         const subSection = await SubSection.findById(subSectionId)
 
         // delete file on cloudinary
-        const publicId = subSection.videoUrl.split('/').at(-1).split('.')[0] 
-        try {
-
-            await cloudinary.uploader.v2.destroy(publicId);
-        } 
-        catch (err) {
-            console.error('Error deleting file on Cloudinary');
-                    // Handle the error, log, and continue with the deletion process
-                    res.status(500).json({
-                        success: true,
-                        message: "Failed to create a Sub Section",
-                        error: err.message
-                    })
-        }
+        await deleteFile(subSection.videoUrl, process.env.FOLDER_NAME) 
 
         // delete SubSection
         await SubSection.findByIdAndDelete(subSectionId);
@@ -170,7 +150,7 @@ exports.deleteSubSection = async(req, res) => {
         return res.status(200).json({
             success: true,
             message: "Sub Section updated successfully",
-            upadatedSection
+            data:upadatedSection
         })
     }
     catch(err){

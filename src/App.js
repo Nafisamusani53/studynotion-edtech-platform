@@ -12,10 +12,14 @@ import OpenRoute from './components/core/Auth/OpenRoute';
 import Dashboard from './pages/Dashboard';
 import Profile from './components/core/DashboardPage/Profile';
 import PrivateRoute from './components/core/Auth/PrivateRoute'
-import Settings from './components/core/DashboardPage/Settings/Settings';
-import EditProfile from './components/core/DashboardPage/EditProfile';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails } from './services/operations/profileOperatins';
+import { ACCOUNT_TYPE } from './utils/constant';
+import Settings from './components/core/DashboardPage/Settings';
+import CreateCourse from './components/core/DashboardPage/CreateCourse';
+import { getAllCategories } from './services/operations/categoriesOperation';
+import MyCourse from './components/core/DashboardPage/MyCourse/MyCourse';
+import EditCourse from './components/core/DashboardPage/EditCourse';
 
 
 
@@ -25,8 +29,11 @@ function App() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {user} = useSelector((state) => state.profile)
 
   useEffect(()=>{
+    dispatch(getAllCategories());
+    
     if(localStorage.getItem("token")){
       const token = JSON.parse(localStorage.getItem("token"))
       dispatch(getUserDetails(token, navigate))
@@ -47,6 +54,18 @@ function App() {
           {/* open route for all user */}
           <Route path='dashboard/profile' element={<Profile/>}/>
           <Route path='dashboard/settings' element={<Settings/>}/>
+
+          {/* only for instructor */}
+          {
+            user && user.role === ACCOUNT_TYPE.INSTRUCTOR && (
+              <>
+              <Route path='dashboard/create-course' element={<CreateCourse/>}/>
+              <Route path='dashboard/my-courses' element={<MyCourse/>}/>
+              <Route path = 'dashboard/edit-course/:courseId' element={<EditCourse/>}/>
+              </>
+              
+            )
+          }
 
         </Route>
       </Routes>
