@@ -17,3 +17,23 @@ export const getAllCategories = () => {
         }
     }
 }
+
+export const getCategoryPageDetails = async(data) => {
+    const toastId = toast.loading("Loading...");
+    let result;
+    try{
+        result = await apiConnector("POST", categories.GET_CATEGORY_PAGE_DETAILS, data);
+        console.log(result?.data?.data);
+
+        if(!result?.data?.success){
+            throw new Error(result.data.message);
+        }
+    }
+    catch(error){
+        toast.error("Failed to fetch the related course")
+        console.log(error)
+        console.log(error.message)
+    }
+    toast.dismiss(toastId);
+    return result?.data?.data;
+}

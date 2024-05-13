@@ -20,6 +20,7 @@ import CreateCourse from './components/core/DashboardPage/CreateCourse';
 import { getAllCategories } from './services/operations/categoriesOperation';
 import MyCourse from './components/core/DashboardPage/MyCourse/MyCourse';
 import EditCourse from './components/core/DashboardPage/EditCourse';
+import Catalog from './pages/Catalog';
 
 
 
@@ -50,6 +51,7 @@ function App() {
         <Route path='/login' element ={<OpenRoute><Login/></OpenRoute>}></Route>
         <Route path='/verify-email' element = {<OpenRoute><OTP/></OpenRoute>}/>
         <Route path='/template' element = {<Template/>}/>
+        <Route path= '/catalog/:categoryName' element = {<Catalog/>}/>
         <Route element = {<PrivateRoute><Dashboard/></PrivateRoute>}>
           {/* open route for all user */}
           <Route path='dashboard/profile' element={<Profile/>}/>
