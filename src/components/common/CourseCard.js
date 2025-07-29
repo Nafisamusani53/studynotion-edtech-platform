@@ -12,7 +12,7 @@ const CourseCard = ({ course}) => {
             <img src={course.thumbnail} alt={course.courseName} className=' rounded-md' />
             <div className='flex flex-col'>
                 <h1 className='text-richblack-5'>{course.courseName}</h1>
-                <p className='text-richblack-400'>{`${course.instructor.firstName} ${course.instructor.lastName}`}</p>
+                <p className='text-richblack-400'>{`${course?.instructor?.firstName} ${course?.instructor?.lastName}`}</p>
                 <ReactStars
                     count={5}
                     edit={false}

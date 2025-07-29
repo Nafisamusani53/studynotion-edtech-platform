@@ -142,37 +142,27 @@ exports.getAllUserDetails = async (req, res) => {
 }
 
 exports.updateDisplayPicture = async(req, res) => {
-    console.log("called")
     try {
         // fetch the id
         const userId = req.user.id
-        console.log("user")
 
         // fetch the image
         const { image } = req.files;
-        console.log("image")
 
         // find the user
         const user = await User.findById(userId , { image: true });
-        console.log("found user")
 
         // delete it from the cloudinary
-        const deleted = await deleteFile(user.image, process.env.FOLDER_NAME);
-        console.log(deleted)
-        console.log("deleted previous file")                                                                       
+        const deleted = await deleteFile(user.image, process.env.FOLDER_NAME);                                                                       
 
         // now upload the file to cloudinary
         const uploadImage = await imageUploader(image, process.env.FOLDER_NAME, 1000,
             1000)
-        console.log("uploaded the new file")
-        console.log(uploadImage)
 
         // Now update the user
         const updateProfile = await User.findByIdAndUpdate(userId ,
             { image: uploadImage.secure_url },
             { new: true })
-            console.log("updated image in the user documnet")
-            console.log(updateProfile)
 
         return res.status(200).json({
             success: true,
@@ -232,11 +222,9 @@ exports.changePassword = async(req, res) => {
                         updatedUser.firstName,
                     )
                 )
-                console.log('Email sent successfully................', emailResponse);
             }
             catch (error) {
                 //if there's an error sending the email, log the error and return a 500 (Internal Server Error) error
-                console.log('Error Occurred While Sending Email: ', error);
                 return res.status(500).json({
                     success: false,
                     message: 'Error Occurred While Sending Email',

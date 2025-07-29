@@ -15,13 +15,11 @@ const UpdateProfie = () => {
 
     const changeHandler = (e) => {
         const selectedFile = e.target.files[0];
-        console.log('Selected File:', selectedFile);
         setFile(selectedFile);
     };
 
     const uploadHandler = (e) => {
         e.preventDefault();
-        console.log(file)
         if (file) {
             dispatch(updatePhoto(file, token, user))
             setFile(null);

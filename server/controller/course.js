@@ -23,7 +23,6 @@ exports.createCourse = async (req, res) => {
         const thumbnail = req.files.thumbnail
         let { status } = req.body;
 
-        console.log("data fetched")
 
         if (!courseName ||
             !courseDescription ||
@@ -38,13 +37,11 @@ exports.createCourse = async (req, res) => {
                 message: "Fill the details properly",
             })
         }
-        console.log("data validation done")
 
         if (!status || status === undefined) {
             status = "Draft";
         }
 
-        console.log("status updated")
 
         //TODO: add pending and approval of status based on admin approval
 
@@ -52,7 +49,6 @@ exports.createCourse = async (req, res) => {
 
 
         const userId = req.user.id
-        console.log(userId);
 
         //check if the user is an instructor
         const instructorDetails = await User.findById(userId, {
@@ -66,8 +62,6 @@ exports.createCourse = async (req, res) => {
                 message: "UnAuthorized Access OR Instructor Details Not Found",
             })
         }
-        console.log("user Verified");
-        console.log("Instructor Details: ", instructorDetails);
 
         //check given Category is valid or not
         const categoryDetails = await Category.findById(category)
@@ -78,12 +72,10 @@ exports.createCourse = async (req, res) => {
             })
         }
 
-        console.log("category validated")
         let newPrice = parseInt(price);
 
         //Upload thumbnail Image to Cloudinary
         const image = await imageUploader(thumbnail, process.env.FOLDER_NAME)
-        console.log("image uploaded")
         const courseNew = await Course.create({
             courseName: courseName,
             courseDescription: courseDescription,
@@ -96,7 +88,6 @@ exports.createCourse = async (req, res) => {
             status,
             instructions
         })
-        console.log("course created")
         //add the new Course to the user schema of instructor
         await User.findByIdAndUpdate(userId,
             {
@@ -106,15 +97,12 @@ exports.createCourse = async (req, res) => {
             }, { new: true }
         )
 
-        console.log("user updated")
-
         //Add the new course to the categories
         const updatedCategory = await Category.findByIdAndUpdate(category,
             { $push: { course: courseNew._id } },
             { new: true }
         )
 
-        console.log("cateogory updated")
         return res.status(200).json({
             success: true,
             message: "Course created successfully",
@@ -161,7 +149,6 @@ exports.getFullCourseDetails = async (req, res) => {
     try {
         // fetch courseId
         const { courseId } = req.body;
-        console.log(req.body)
 
         // validate id
         if (!courseId) {
@@ -224,8 +211,6 @@ exports.editCourse = async (req, res) => {
         const thumbnail = req.files.thumbnail
         let { status } = req.body;
 
-        console.log("data fetched")
-
         if (!courseId ||
             !courseName ||
             !courseDescription ||
@@ -240,13 +225,11 @@ exports.editCourse = async (req, res) => {
                 message: "Fill the details properly",
             })
         }
-        console.log("data validation done")
 
         if (!status || status === undefined) {
             status = "Draft";
         }
 
-        console.log("status updated")
 
         //TODO: add pending and approval of status based on admin approval
 
@@ -254,7 +237,6 @@ exports.editCourse = async (req, res) => {
 
 
         const userId = req.user.id
-        console.log(userId);
 
         //check if the user is an instructor
         const instructorDetails = await User.findById(userId, {
@@ -268,8 +250,6 @@ exports.editCourse = async (req, res) => {
                 message: "UnAuthorized Access OR Instructor Details Not Found",
             })
         }
-        console.log("user Verified");
-        console.log("Instructor Details: ", instructorDetails);
 
         // check if course exist
         const courseExist = await Course.findById(courseId);
@@ -289,19 +269,15 @@ exports.editCourse = async (req, res) => {
             })
         }
 
-        console.log("category validated")
 
         let newPrice = parseInt(price);
 
         // delete previous image
         const deleted = await deleteFile(courseExist.thumbnail, process.env.FOLDER_NAME);
-        console.log(deleted)
-        console.log("deleted previous thumbnail")
 
         //Upload thumbnail Image to Cloudinary
 
         const image = await imageUploader(thumbnail, process.env.FOLDER_NAME)
-        console.log("image uploaded")
 
         const courseNew = await Course.findByIdAndUpdate(courseId, {
             courseName,
@@ -322,7 +298,6 @@ exports.editCourse = async (req, res) => {
         }).populate("category")
         .populate("reviewAndRatings")
         .exec();
-        console.log("course created")
 
         // check if category has changed or not
         if (courseExist.category !== categoryDetails._id) {
@@ -337,7 +312,6 @@ exports.editCourse = async (req, res) => {
                 { new: true }
             )
         }
-        console.log("cateogory updated")
 
         return res.status(200).json({
             success: true,

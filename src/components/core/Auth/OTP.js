@@ -25,10 +25,8 @@ const OTP = () => {
 
     const submitHandler = async(e) => {
         e.preventDefault();
-        console.log("SignupData" , signupData)
         let data = {...signupData}
         data.otp = parseInt(otp)
-        console.log(data)
         dispatch(signup(data, navigate))
         setOtp("");
     }

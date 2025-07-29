@@ -16,12 +16,7 @@ const Navbar = () => {
     const { user } = useSelector((state) => state.profile);
     const { totalItems } = useSelector((state) => state.cart);
     const {categories} = useSelector((state)=> state.category)
-
-
-    console.log(token);
-    console.log(user);
     
-    console.log(categories);
 
     const location = useLocation()
     const matchRoute = (route) => {

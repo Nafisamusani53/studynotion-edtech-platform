@@ -19,8 +19,6 @@ const ProfileDropdown = () => {
 
   if (!user) 
   {
-    console.log("no user")
-    console.log(user)
     return null
   }
 

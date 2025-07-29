@@ -21,11 +21,9 @@ const EditProfile = () => {
 
     const profileSubmitHandler = (data) => {
         try {
-            console.log(data)
             dispatch(updateProfile(token, data))
         }
         catch (error) {
-            console.log("error while updating the profile")
             console.log(error.message);
         }
     }

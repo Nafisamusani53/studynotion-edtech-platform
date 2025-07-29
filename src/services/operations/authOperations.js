@@ -10,21 +10,14 @@ export const sendOTP = (email, navigate) => {
         dispatch(setLoading(true));
         const toastId = toast.loading("Loading...")
         try{
-            console.log(email)
             const result = await apiConnector("POST", auth.SEND_OTP, {email});
-            console.log(result);
-
             if(!result.data.success){
                 throw new Error(result.data.message)
             }
-            console.log(result.data);
                 toast.success("OTP sent successfully");
                 navigate("/verify-email");
         }
         catch(error){
-            console.log("Error while sending otp");
-            console.log(error)
-            console.log(error.message)
         }
         dispatch(setLoading(false));
         toast.dismiss(toastId);
@@ -38,22 +31,16 @@ export const signup = (data, navigate) => {
             // const info = {...data};
             // const otp = parseInt(otp1);
             // data.otp = otp;
-            console.log("data")
-            console.log(data)
             const result = await apiConnector("POST", auth.SIGNUP, data);
-            console.log("signup result",result)
 
             if(!result.data.success){
                 throw new Error(result.data.message)
             }
-            console.log(result.data.data)
                 toast.success("Account created successfully")
                 navigate("/login");
         }
         catch(error){
             toast.error("Failed to create account")
-            console.log(error)
-            console.log(error.message)
         }
         dispatch(setLoading(false))
         toast.dismiss(toastId)
@@ -66,7 +53,6 @@ export const login = (data, navigate) => {
         dispatch(setLoading(true));
         try{
             const result = await apiConnector("POST", auth.LOGIN, data);
-            console.log(result)
 
             if(result.data.success){
                 toast.success("Loged In Successfully")
@@ -83,7 +69,6 @@ export const login = (data, navigate) => {
         }
         catch(error){
             toast.error("Failed to Login In")
-            console.log("Error in axios")
             console.error(error)
         }
         dispatch(setLoading(false))

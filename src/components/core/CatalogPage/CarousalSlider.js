@@ -23,7 +23,6 @@ const CarousalSlider = ({ courses }) => {
         }
     };
 
-    console.log("CarousalSlider")
 
     return (
         <div className='my-own-custom-container p-4'>

@@ -6,7 +6,6 @@ exports.contactUsEmail = (
     contactNumber,
     code
   ) => {
-    console.log("mistake in template")
     return `<!DOCTYPE html>
     <html>
     

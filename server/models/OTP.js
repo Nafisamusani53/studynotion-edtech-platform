@@ -23,17 +23,14 @@ async function sendVerificationMail(email, otp){
     try{
         const mailResponse = await mailSender(email, "Verification code from StudyNotion", otpTemplate(otp));
 
-        console.log("Mail send successfully" , mailResponse)
         
     }
     catch(err){
-        console.log("Error while sending mail")
         console.error(err.message)
     }
 }
 
 otpSchema.pre('save', async function(next){
-    console.log("New document saved to the database");
 
      //only send an email when a new document is created 
     if(this.isNew) {

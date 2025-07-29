@@ -42,30 +42,8 @@ const Signup = () => {
         event.preventDefault();
         data.role = role;
         dispatch(setSignupData(data));
-        console.log("In SignUP form",signupData)
 
         dispatch(sendOTP(data.email, navigate));
-        // try {
-        //     data.role = role;
-        //     const response = await axios.post("http://localhost:4000/api/v1/auth/sendOTP", {email : data.email});
-        //     console.log(response); // Log the entire response object to see its structure
-    
-        //     // Assuming the response contains a property named 'success'
-        //     if (response.data.success) {
-        //         console.log("OTP sent successfully");
-        //         data.otp = parseInt(response.data.otp);
-        //         try {
-        //             const account = await axios.post("http://localhost:4000/api/v1/auth/signup", data);
-        //             console.log(account.data);
-        //         } catch (error) {
-        //             console.log("Error while creating account");
-        //         }
-        //     } else {
-        //         console.log("OTP not sent successfully");
-        //     }
-        // } catch (error) {
-        //     console.log("Error while sending OTP");
-        // }
         setData({
             firstName: "",
             lastName: "",

@@ -21,7 +21,6 @@ const CourseInfoForm = () => {
   } = useForm();
 
   const { categories } = useSelector((state) => state.category);
-  console.log(categories)
   const { course, editCourse, step } = useSelector((state) => state.course);
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -33,8 +32,6 @@ const CourseInfoForm = () => {
   const pStyle = `mb-1 text-sm after:content-["_*"] after:text-pink-500 after:text-lg`;
 
   const courseAddHandler = (data) => {
-    console.log("submitting the form")
-    console.log(data);
     if(editCourse){
       data.courseId = course._id;
       dispatch(updateCourse(data, token))

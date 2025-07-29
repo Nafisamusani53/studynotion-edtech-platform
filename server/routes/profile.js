@@ -22,7 +22,6 @@ router.post("/changePassword", auth, changePassword),
 // Get Enrolled Courses
 router.get("/getEnrolledCourses", auth, isStudent, getEnrolledCourses)
 router.post("/updateDisplayPicture", auth, updateDisplayPicture)
-console.log("profile Router")
 router.get("/instructorDashboard", auth, isInstructor, instructorDashboard)
 
 module.exports = router

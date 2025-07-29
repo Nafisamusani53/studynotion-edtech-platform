@@ -8,13 +8,9 @@ const ChipInput = ({ label, name, placeholder, register, errors, setValue, getVa
     const [tags, setTags] = useState([])
 
     useEffect(() => {
-        console.log("tag", course?.tag)
             if(editCourse){
                 setTags([...tags, course?.tag])
             }
-            // console.log(course)
-           
-
         register(name, {
             required: {
                 value: true,
@@ -25,10 +21,7 @@ const ChipInput = ({ label, name, placeholder, register, errors, setValue, getVa
     }, [course])
 
     const addHandler = (event) => {
-        console.log("add Handler")
-        console.log(event.key)
         if (event.key === "Enter") {
-            console.log(event.key)
             event.preventDefault();
             const item = event.target.value.trim();
             if (!tags.includes(item)) {

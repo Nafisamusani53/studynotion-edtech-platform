@@ -28,7 +28,6 @@ const MyCourse = () => {
     useEffect(() => {
         const fetchData = async (token) => {
             const result = await getInstructorCourses(token);
-            console.log("useEffect", result);
             setAllCourse(result);
         }
 

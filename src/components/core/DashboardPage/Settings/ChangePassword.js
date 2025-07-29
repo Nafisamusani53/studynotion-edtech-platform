@@ -42,7 +42,6 @@ const ChangePassword = () => {
             }
         }
         catch (error) {
-            console.log("Error while changing the profile")
             console.error(error.message)
 
         }

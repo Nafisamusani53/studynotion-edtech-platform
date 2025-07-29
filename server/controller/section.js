@@ -55,12 +55,10 @@ exports.createSection = async(req, res) => {
 
 // updated section
 exports.updateSection = async(req, res) => {
-    console.log("inside UpdateSection")
     
     try{
         // fetch Data
         const{sectionName, sectionId, courseId} = req.body
-        console.log("section", req.body);
 
         //  validate Data
         if(!sectionName || !sectionId || !courseId){

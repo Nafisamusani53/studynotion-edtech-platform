@@ -23,7 +23,6 @@ export const getCategoryPageDetails = async(data) => {
     let result;
     try{
         result = await apiConnector("POST", categories.GET_CATEGORY_PAGE_DETAILS, data);
-        console.log(result?.data?.data);
 
         if(!result?.data?.success){
             throw new Error(result.data.message);
@@ -31,8 +30,6 @@ export const getCategoryPageDetails = async(data) => {
     }
     catch(error){
         toast.error("Failed to fetch the related course")
-        console.log(error)
-        console.log(error.message)
     }
     toast.dismiss(toastId);
     return result?.data?.data;

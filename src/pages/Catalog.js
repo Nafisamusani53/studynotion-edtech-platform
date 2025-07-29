@@ -19,9 +19,7 @@ const Catalog = () => {
         const fetchData = async () => {
             const category = categories.filter((category) => categoryName === category.categoryName.toLowerCase().replace(" ", "-"))
             setCurrentCategory(category[0]);
-            console.log(category[0]?._id)
             const result = await getCategoryPageDetails({ categoryId: category[0]?._id });
-            console.log("result in fetch data", result)
 
             if (result) {
                 if (result.selectedCategory && result.selectedCategory.course) {
@@ -41,17 +39,13 @@ const Catalog = () => {
 
     }, [categoryName])
 
-    console.log("categoryCourses", categoryCourses);
-    console.log("otherCourses", otherCourses);
-    console.log("topSellingCourses", topSellingCourses)
-
 
     return (
         <>
             <div className='bg-richblack-800 py-8'>
 
                 <div className='w-11/12 mx-auto flex flex-col gap-4'>
-                    <h1 className='text-richblack-5 text-4xl font-bold'>{currentCategory?.categoryName}</h1>
+                    <h1 className='text-richblack-5 text-4xl font-bold'>{currentCategory?.categoryName || categoryName.toLowerCase().replace(" ", "-")}</h1>
                     <p className='text-xl text-richblack-200'>{currentCategory?.categoryDescription}</p>
                 </div>
 

@@ -25,7 +25,6 @@ const Login = () => {
 
     const submitHandler = (event) => {
         event.preventDefault();
-        console.log(data);
         dispatch(login(data,navigate))
         setData({
             email:"",

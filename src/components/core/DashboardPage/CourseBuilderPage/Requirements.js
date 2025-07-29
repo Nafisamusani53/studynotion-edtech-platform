@@ -8,9 +8,7 @@ const Requirements = ({ label, name, placeholder, register, errors, setValue, ge
     const [requirementList, setRequirementList] = useState([])
 
     useEffect(() => {
-        console.log("instruction", course?.instructions)
         if (editCourse) {
-            // console.log(course)
             setRequirementList(course?.instructions)
           }
         register(name , {required : {

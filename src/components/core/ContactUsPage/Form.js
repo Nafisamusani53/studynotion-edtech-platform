@@ -28,7 +28,6 @@ const Form = () => {
     },[reset,isSubmitted])
     const messageHandler = (data) => {
         try{
-            console.log("messageHandler")
             dispatch(contactUsEmail(data))
 
         }catch(err){

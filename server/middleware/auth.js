@@ -1,14 +1,9 @@
 // Authentication
 const jwt = require('jsonwebtoken')
-console.log("middleware")
 exports.auth = (req,res, next) => {
     try{
-        console.log("hello")
         const token = req.header("Authorization").replace("Bearer ", "") || req.cookies.token || req.body.token;
-        console.log("cookies")
-        console.log(token)
         if(!token){
-            console.log("no token")
             return res.status(401).json({
                 success: false,
                 message : "Invalid user or token Missing"
@@ -16,17 +11,11 @@ exports.auth = (req,res, next) => {
         }
 
         try{
-            console.log("try block in auth")
         const decode = jwt.verify(token, process.env.JWT_SECRET)
-        console.log("token decoded") 
         req.user = decode
-        console.log(decode)
-        console.log("auth called")
-        console.log("In auth : req", req.body)
         next();
         }
         catch(error){
-            console.log(error.message)
             return res.status(403).json({
                 success: false,
                 message: error.message
@@ -70,7 +59,6 @@ exports.isInstructor = async(req,res, next)=>{
                 message: "This is protected route for Instructor only"
             })
         }
-        console.log("calling the next function")
         next();
     }
     catch(err){

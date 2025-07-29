@@ -19,13 +19,11 @@ export const createCourse = (data, token) => {
             formData.append("instructions", data.instructions);
             formData.append("thumbnail", data.thumbnail);
 
-            console.log("formData", formData);
             const headers = {
 
                 'Authorization': `Bearer ${token}`,
             }
             const result = await apiConnector("POST", course.CREATE_COURSE, formData, headers)
-            console.log(result.data.data);
 
             if (!result.data.success) {
                 throw new Error(result.data.message)
@@ -38,8 +36,6 @@ export const createCourse = (data, token) => {
         }
         catch (error) {
             toast.error("Error while creating the course")
-            console.log(error.message)
-            console.log("error in axios");
         }
         toast.dismiss(toastId);
     }
@@ -61,13 +57,11 @@ export const updateCourse = (data, token) => {
             formData.append("instructions", data.instructions);
             formData.append("thumbnail", data.thumbnail);
 
-            console.log("formData", formData);
             const headers = {
 
                 'Authorization': `Bearer ${token}`,
             }
             const result = await apiConnector("POST", course.EDIT_COURSE, formData, headers)
-            console.log(result.data.data);
 
             if (!result.data.success) {
                 throw new Error(result.data.message)
@@ -80,8 +74,6 @@ export const updateCourse = (data, token) => {
         }
         catch (error) {
             toast.error("Error while updating the course")
-            console.log(error.message)
-            console.log("error in axios");
         }
         toast.dismiss(toastId);
     }
@@ -97,7 +89,6 @@ export const addSection = async (data, token) => {
             'Authorization': `Bearer ${token}`,
         }
         result = await apiConnector("POST", course.CREATE_SECTION, data, headers)
-        console.log(result.data.data)
 
         if (!result.data.success) {
 
@@ -110,8 +101,6 @@ export const addSection = async (data, token) => {
     }
     catch (error) {
         toast.error("Failed to add Section")
-        console.log("Failed to add section")
-        console.log(error.message)
     }
     toast.dismiss(toastId);
     return result.data.data
@@ -127,7 +116,6 @@ export const getInstructorCourses = async (token) => {
             'Authorization': `Bearer ${token}`,
         }
         const result = await apiConnector("GET", course.INSTRUCTOR_COURSE, null, headers);
-        console.log("Result", result.data.data)
 
         if (!result.data.success) {
             throw new Error(result.data.message)
@@ -138,7 +126,6 @@ export const getInstructorCourses = async (token) => {
     }
     catch (error) {
         toast.error("Failed to load courses")
-        console.log(error.message);
     }
 
 
@@ -152,7 +139,6 @@ export const deleteCourse = async (data, token) => {
             'Authorization': `Bearer ${token}`,
         }
         const result = await apiConnector("DELETE", course.DELETE_COURSE, data, headers);
-        console.log("Result", result.data.data)
 
         if (!result.data.success) {
             throw new Error(result.data.message)
@@ -163,7 +149,6 @@ export const deleteCourse = async (data, token) => {
     }
     catch (error) {
         toast.error("Failed to load courses")
-        console.log(error.message);
     }
     toast.dismiss(toastId);
 }
@@ -171,7 +156,6 @@ export const deleteCourse = async (data, token) => {
 export const getFullCourseDetails = async(data, token) => {
 
 
-        console.log("data", data);
         const toastId = toast.loading("Loading...")
     let result;
         try {
@@ -181,7 +165,6 @@ export const getFullCourseDetails = async(data, token) => {
                 'Authorization': `Bearer ${token}`,
             }
              result = await apiConnector("POST", course.GET_FULL_COURSE_DETAILS, data, headers)
-            console.log(result.data.data);
 
             if (!result.data.success) {
                 throw new Error(result.data.message)
@@ -190,8 +173,6 @@ export const getFullCourseDetails = async(data, token) => {
         }
         catch (error) {
             toast.error("Failed to fetch course detail")
-            console.log(error.message);
-            console.log(error)
         }
 
         toast.dismiss(toastId);
@@ -208,7 +189,6 @@ export const updateSection = async (data, token) => {
             'Authorization': `Bearer ${token}`,
         }
         result = await apiConnector("POST", course.UPDATE_SECTION, data, headers);
-        console.log(result.data.data);
 
         if (!result.data.success) {
             throw new Error(result.data.message);
@@ -219,8 +199,6 @@ export const updateSection = async (data, token) => {
     }
     catch (error) {
         toast.error("Failed to update the section");
-        console.log(error.message)
-        console.log(error)
     }
     toast.dismiss(toastId);
     return result.data.data
@@ -236,7 +214,6 @@ export const deleteSection = async (data, token) => {
             'Authorization': `Bearer ${token}`,
         }
         result = await apiConnector("DELETE", course.DELETE_SECTION, data, headers);
-        console.log(result.data.data);
 
         if (!result.data.success) {
             throw new Error(result.data.message);
@@ -247,8 +224,6 @@ export const deleteSection = async (data, token) => {
     }
     catch (error) {
         toast.error("Failed to delete the section");
-        console.log(error.message)
-        console.log(error)
     }
     toast.dismiss(toastId);
     return result.data.data;
@@ -264,7 +239,6 @@ export const deleteSubSection = async (data, token) => {
             'Authorization': `Bearer ${token}`,
         }
         result = await apiConnector("DELETE", course.DELETE_SUBSECTION, data, headers);
-        console.log(result.data.data);
 
         if (!result.data.success) {
             throw new Error(result.data.message)
@@ -274,8 +248,6 @@ export const deleteSubSection = async (data, token) => {
     }
     catch (error) {
         toast.error("Failed to delete the lecture")
-        console.log(error);
-        console.log(error.message);
     }
     toast.dismiss(toastId)
     return result.data.data
@@ -290,7 +262,6 @@ export const createSubSection = async(data,token) => {
             'Authorization': `Bearer ${token}`,
         }
         result = await apiConnector("POST", course.CREATE_SUBSECTION, data, headers);
-        console.log(result.data.data);
 
         if(!result.data.success){
             throw new Error(result.data.message)
@@ -300,8 +271,6 @@ export const createSubSection = async(data,token) => {
     }
     catch(error){
         toast.error("Failed to add the lecture")
-        console.log(error);
-        console.log(error.message);
     }
     toast.dismiss(toastId)
     return result?.data?.data
@@ -317,8 +286,6 @@ export const updateSubSection = async(data,token) => {
             'Authorization': `Bearer ${token}`,
         }
         result = await apiConnector("POST", course.UPDATE_SUBSECTION, data, headers);
-        console.log("Result in operation", result)
-        console.log("result.data.data",result.data.data);
         if(!result.data.success){
             throw new Error(result.data.message)
         }
@@ -327,8 +294,6 @@ export const updateSubSection = async(data,token) => {
     }
     catch(error){
         toast.error("Failed to add the lecture")
-        console.log(error);
-        console.log(error.message);
     }
     toast.dismiss(toastId)
     return result?.data?.data
@@ -353,8 +318,6 @@ export const publishCourse = async(data,token) => {
     }
     catch(error){
         toast.error("Failed to add the lecture")
-        console.log(error);
-        console.log(error.message);
     }
     toast.dismiss(toastId)
     return result?.data?.data

@@ -9,14 +9,12 @@ const EditCourse = () => {
 
     const {courseId} = useParams();
     const dispatch = useDispatch();
-    console.log(courseId)
     const {token} = useSelector((state)=>state.auth)
     const {course} = useSelector((state)=> state.course);
 
     useEffect(()=>{
       const fetchData = async()=>{
         const result = await getFullCourseDetails({courseId: courseId}, token);
-        console.log("result in Edit Course", result)
         dispatch(setCourse(result));
         dispatch(setEditCourse(true));
         dispatch(setStep(1));

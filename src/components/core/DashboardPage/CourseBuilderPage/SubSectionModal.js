@@ -43,7 +43,6 @@ const SubSectionModal = ({ modalData, setModalData, add = false, view = false, e
         }
     }
 
-    console.log("modal Data", modalData)
 
     const handleEditSubsection = async () => {
         const currentVal = getValues();
@@ -66,15 +65,12 @@ const SubSectionModal = ({ modalData, setModalData, add = false, view = false, e
         }
         setLoading(true)
         const result = await updateSubSection(formData, token)
-        console.log("For Set Value",result);
         if (result) {
-            // console.log("result", result)
             // update the structure of course
             const updatedCourseContent = course.courseContent.map((section) =>
                 (section._id === modalData.sectionId ? result : section)
             )
             dispatch(setCourse({ ...course, courseContent: updatedCourseContent }))
-            console.log("Course to check undefined",course)
         }
         setModalData(null)
         setLoading(false)

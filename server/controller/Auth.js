@@ -53,8 +53,6 @@ exports.sendOTP = async(req, res) => {
 
         //check unique otp or not
         const result = await OTP.findOne({otp: otp});
-        console.log('OTP Generated : ', otp);
-        console.log('Result : ', result);
         //if not unique
         while(result) {
             otp = otpGenerator.generate(6, {
@@ -65,7 +63,6 @@ exports.sendOTP = async(req, res) => {
         const otpPayload = {email, otp};
         //create an entry for OTP 
         const otpBody  = await OTP.create(otpPayload);
-        console.log('OTP Body', otpBody);
 
         //return response successfully
         res.status(200).json({
@@ -206,7 +203,6 @@ exports.signup = async(req, res) => {
 
 // login
 exports.login = async(req,res) => {
-    console.log("login controller")
     try{
         const {email, password} = req.body;
 
@@ -219,7 +215,6 @@ exports.login = async(req,res) => {
             })
         }
 
-        console.log(1)
 
         // check if the email exist or not
         let user = await User.findOne({email}).populate("profile");
@@ -231,7 +226,6 @@ exports.login = async(req,res) => {
             })
         }
 
-        console.log(2)
         // Now match the password
         if(await bcrypt.compare(password, user.password)){
             //Generate JWT
@@ -244,13 +238,11 @@ exports.login = async(req,res) => {
                 expiresIn: '2h'
             })
 
-            console.log(3)
             //save token to user document in database
             user = user.toObject()
             user.token = token
             user.password = undefined
 
-            console.log(4)
             const options = {
                 maxAge : 3*24*60*60*1000,
                 httpOnly: true,
@@ -265,7 +257,6 @@ exports.login = async(req,res) => {
             })
         }
         else{
-            console.log(5)
             return res.status(401).json({
                 success: false,
                 message: "Incorrect password or email"
@@ -274,7 +265,6 @@ exports.login = async(req,res) => {
 
     }
     catch(err){
-        console.log(6)
         res.status(500).json({
             success: false,
             message: err.message
