@@ -19,6 +19,7 @@ export const profile = {
     USER_DETAILS : BASE_URL + "/profile/getUserDetails",
     UPDATE_PROFILE : BASE_URL + "/profile/updateProfile",
     CHANGE_PASSWORD : BASE_URL + "/profile/changePassword",
+    GET_ENROLLED_COURSES: BASE_URL + "/profile/getEnrolledCourses"
 
 }
 export const contactUs = {
@@ -38,4 +39,12 @@ export const course = {
     CREATE_SUBSECTION : BASE_URL + "/course/addSubSection",
     UPDATE_SUBSECTION : BASE_URL + "/course/updateSubSection",
     PUBLISH_COURSE : BASE_URL + "/course/publishCourse",
+    COURSE_DETAILS : BASE_URL + "/course/getCourseDetails",
+   
+}
+
+export const payment = {
+  COURSE_PAYMENT: BASE_URL + "/payment/capturePayment",
+  COURSE_VERIFY: BASE_URL + "/payment/verifyPayment",
+  SEND_PAYMENT_SUCCESS_EMAIL: BASE_URL + "/payment/sendPaymentSuccessEmail",
 }

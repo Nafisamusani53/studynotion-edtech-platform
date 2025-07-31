@@ -77,9 +77,9 @@ const Navbar = () => {
                 </nav>
 
                 <div className='flex gap-4 items-center justify-center text-richblack-100 text-base'>
-                    <Link to={"search"}>
+                    {/* <Link to={"search"}>
                         <IoIosSearch className='text-2xl'/>
-                    </Link>
+                    </Link> */}
                     {   
                        token && token!== null && user && user?.role === ACCOUNT_TYPE.STUDENT && (
                             <Link to={"/dashboard/cart"} className='relative'>

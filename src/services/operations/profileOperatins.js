@@ -128,3 +128,26 @@ export const changePassword = (token, data,navigate) => {
         toast.dismiss(toastId);
     }
 }
+export async function getUserEnrolledCourses(token) {
+  const toastId = toast.loading("Loading...")
+  let result = []
+  try {
+    const response = await apiConnector(
+      "GET",
+      profile.GET_ENROLLED_COURSES,
+      null,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    )
+
+    if (!response.data.success) {
+      throw new Error(response.data.message)
+    }
+    result = response.data.data
+  } catch (error) {
+    toast.error("Could Not Get Enrolled Courses")
+  }
+  toast.dismiss(toastId)
+  return result
+}

@@ -324,3 +324,25 @@ export const publishCourse = async(data,token) => {
 
 }
 
+export const fetchCourseDetails = async (courseId) => {
+  const toastId = toast.loading("Loading...")
+  //   dispatch(setLoading(true));
+  let result = null
+  try {
+    const response = await apiConnector("POST",course.COURSE_DETAILS, {
+      courseId,
+    })
+
+    if (!response.data.success) {
+      throw new Error(response.data.message)
+    }
+    result = response.data
+  } catch (error) {
+    result = error.response.data
+    // toast.error(error.response.data.message);
+  }
+  toast.dismiss(toastId)
+  //   dispatch(setLoading(false));
+  return result
+}
+

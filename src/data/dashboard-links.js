@@ -37,24 +37,24 @@ export const sidebarLinks = [
     type: ACCOUNT_TYPE.STUDENT,
     icon: VscBook,
   },
+  // {
+  //   id: 6,
+  //   name: "WishList",
+  //   path: "/dashboard/wishlist",
+  //   type: ACCOUNT_TYPE.STUDENT,
+  //   icon: VscBookmark ,
+  // },
   {
     id: 6,
-    name: "WishList",
-    path: "/dashboard/wishlist",
-    type: ACCOUNT_TYPE.STUDENT,
-    icon: VscBookmark ,
-  },
-  {
-    id: 7,
     name: "Your Cart",
     path: "/dashboard/cart",
     type: ACCOUNT_TYPE.STUDENT,
     icon: VscHistory,
   },
-  {
-    id: 8,
-    name: "Courses",
-    path: "/search",
-    icon: VscMortarBoard,
-  },
+  // {
+  //   id: 8,
+  //   name: "Courses",
+  //   path: "/search",
+  //   icon: VscMortarBoard,
+  // },
 ];

@@ -3,6 +3,8 @@ const { instance } = require('../config/razorpay')
 const Course = require('../models/Course')
 const User = require('../models/User')
 const { mailSender } = require('../utils/mailSender')
+const { paymentSuccessEmail } = require('../mail/templates/paymentSuccessEmail')
+const crypto = require('crypto')
 
 
 exports.capturePayment = async (req, res) => {
@@ -70,7 +72,7 @@ exports.capturePayment = async (req, res) => {
         // return response
         return res.status(200).json({
             success: true,
-            courseName: course.coureseName,
+            courseName: course.courseName,
             courseDescription: course.courseDescription,
             thumbnail: course.thumbnail,
             orderId: paymentResponse.id,

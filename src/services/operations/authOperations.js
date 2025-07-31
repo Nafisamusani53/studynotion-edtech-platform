@@ -92,7 +92,6 @@ export const logout = (navigate) => {
     try{
       const response = await apiConnector("POST", auth.RESET_PASS_TOKEN, {email,})
 
-      console.log("RESET PASSWORD TOKEN RESPONSE....", response);
 
       if(!response.data.success) {
         throw new Error(response.data.message);
@@ -102,7 +101,6 @@ export const logout = (navigate) => {
       setEmailSent(true);
     }
     catch(error) {
-      console.log("RESET PASSWORD TOKEN Error", error);
       toast.error("Failed to send email for resetting password");
     }
     dispatch(setLoading(false));
@@ -115,7 +113,6 @@ export function resetPassword(password, confirmPassword, token, navigate) {
     try{
       const response = await apiConnector("POST", auth.RESET_PASSWORD, {password, confirmPassword, token});
 
-      console.log("RESET Password RESPONSE ... ", response);
 
 
       if(!response.data.success) {
@@ -126,7 +123,6 @@ export function resetPassword(password, confirmPassword, token, navigate) {
       navigate("/login")
     }
     catch(error) {
-      console.log("RESET PASSWORD TOKEN Error", error);
       toast.error("Unable to reset password");
     }
     dispatch(setLoading(false));

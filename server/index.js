@@ -1,6 +1,6 @@
+require('dotenv').config()
 const express = require("express")
 const app = express()
-require('dotenv').config()
 const {dbConnect} = require('./config/database')
 const {cloudinaryConnect} = require('./config/cloudinay');
 const cors = require('cors')

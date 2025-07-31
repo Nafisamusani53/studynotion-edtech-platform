@@ -23,6 +23,9 @@ import EditCourse from './components/core/DashboardPage/EditCourse';
 import Catalog from './pages/Catalog';
 import ResetPassword from './pages/ResetPassword';
 import UpdatePassword from './pages/UpdatePassword';
+import EnrolledCourses from './components/core/DashboardPage/EnrolledCourses';
+import CourseDetails from './pages/CourseDetails';
+import Error from './pages/Error';
 
 
 
@@ -56,6 +59,7 @@ function App() {
         <Route path='/verify-email' element = {<OpenRoute><OTP/></OpenRoute>}/>
         <Route path='/template' element = {<Template/>}/>
         <Route path= '/catalog/:categoryName' element = {<Catalog/>}/>
+        <Route path= '/course/:courseId' element = {<CourseDetails/>}/>
         <Route element = {<PrivateRoute><Dashboard/></PrivateRoute>}>
           {/* open route for all user */}
           <Route path='dashboard/profile' element={<Profile/>}/>
@@ -72,8 +76,17 @@ function App() {
               
             )
           }
+          {
+            user && user.role === ACCOUNT_TYPE.STUDENT && (
+              <>
+              <Route path='dashboard/enrolled-courses' element={<EnrolledCourses/>}/>
+              </>
+              
+            )
+          }
 
         </Route>
+        <Route path="*" element={<Error />} />
       </Routes>
     </div>
   );
