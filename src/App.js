@@ -21,6 +21,8 @@ import { getAllCategories } from './services/operations/categoriesOperation';
 import MyCourse from './components/core/DashboardPage/MyCourse/MyCourse';
 import EditCourse from './components/core/DashboardPage/EditCourse';
 import Catalog from './pages/Catalog';
+import ResetPassword from './pages/ResetPassword';
+import UpdatePassword from './pages/UpdatePassword';
 
 
 
@@ -49,6 +51,8 @@ function App() {
         <Route path="/contact" element ={<ContactUs/>}></Route>
         <Route path='/signup' element ={<OpenRoute><Signup/></OpenRoute>}></Route>
         <Route path='/login' element ={<OpenRoute><Login/></OpenRoute>}></Route>
+        <Route path="/reset-password" element={ <OpenRoute><ResetPassword/></OpenRoute> }/>
+        <Route path="update-password/:id" element={ <OpenRoute><UpdatePassword /></OpenRoute> }/>
         <Route path='/verify-email' element = {<OpenRoute><OTP/></OpenRoute>}/>
         <Route path='/template' element = {<Template/>}/>
         <Route path= '/catalog/:categoryName' element = {<Catalog/>}/>

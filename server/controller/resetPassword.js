@@ -31,9 +31,9 @@ exports.resetPasswordToken = async(req,res) => {
             resetPasswordExpires: Date.now() + 5*60*1000,
         },{new: true})
 
-        const url = `https://localhost:3000/update-password/${token}`
+        const url = `http://localhost:3000/update-password/${token}`
 
-        await mailSender(email, 'Reset Password Link', `Your link for email verification is ${url}. Please click this url to reset your password.`)
+        await mailSender(email, 'Reset Password Link', `Your link for email verification is <a href="${url}">Click here to reset your password</a>.`)
 
         return res.status(200).json({
             success: true,
@@ -51,9 +51,8 @@ exports.resetPasswordToken = async(req,res) => {
 
 exports.resetPassword = async(req,res) => {
     try{
-        const {password, confirmPass, token} = req.body;
-
-        if(password !== confirmPass){
+        const { password, confirmPassword, token} = req.body;
+        if( password !== confirmPassword){
             return res.status(401).json({
                 success: false,
                 message: "Password and Confirm Password does not match"
@@ -71,16 +70,22 @@ exports.resetPassword = async(req,res) => {
         }
 
         if(Date.now() > existingUser.resetPasswordExpires){
+            await User.findOneAndUpdate({ token: token }, {
+                token: null,
+                resetPasswordExpires: null
+            }, { new: true })
             return res.status(401).json({
                 success: false,
                 message: "Link expired"
             })
         }
         //hash password
-        const hashPassword = await bcrypt(password, 10);
+        const hashPassword = await bcrypt.hash(password, 10);
 
         const user = await User.findOneAndUpdate({token: token},{
-            password: hashPassword
+            password: hashPassword,
+            token: null,
+            resetPasswordExpires: null
         },{new:true})
 
         res.status(200).json({
@@ -93,5 +98,8 @@ exports.resetPassword = async(req,res) => {
             success: false,
             message: err.message
         })
+    }
+    finally{
+
     }
 }

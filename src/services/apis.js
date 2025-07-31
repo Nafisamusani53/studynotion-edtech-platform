@@ -10,6 +10,8 @@ export const auth = {
     LOGIN : BASE_URL + "/auth/login",
     SIGNUP : BASE_URL + "/auth/signup",
     SEND_OTP : BASE_URL + "/auth/sendOTP",
+    RESET_PASS_TOKEN : BASE_URL + "/auth/reset-password-token",
+    RESET_PASSWORD: BASE_URL + "/auth/reset-password",
 }
 
 export const profile = {
