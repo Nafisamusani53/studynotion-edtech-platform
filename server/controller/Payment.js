@@ -93,6 +93,7 @@ exports.capturePayment = async (req, res) => {
 }
 
 exports.verifySignature = async (req, res) => {
+    console.log(process.env.RAZORPAY_WEBHOOK_SECRET)
     const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
 
     const signature = req.headers['x-razorpay-signature']
@@ -100,7 +101,8 @@ exports.verifySignature = async (req, res) => {
     const shasum = crypto.createHmac('sha256', webhookSecret);
     shasum.update(JSON.stringify(req.body));
     const digest = shasum.digest("hex");
-
+console.log(signature)
+console.log(digest)
     if (signature === digest) {
 
         const { courseId, userId } = req.body.payload.payment.entity.notes;
