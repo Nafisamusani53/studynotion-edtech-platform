@@ -14,13 +14,13 @@ const paymentRoutes = require('./routes/payments')
 const courseRoutes = require('./routes/course')
 const contactUs = require('./routes/contactUs')
 
-// app.use(express.json());
+app.use(express.json());
 
 // connect with databases
 dbConnect();
 
 // middlewares
-app.use(express.json())
+// app.use(express.json())
 app.use(cookieparser())
 app.use(cors({
     origin: 'http://localhost:3000',

@@ -92,7 +92,7 @@ exports.capturePayment = async (req, res) => {
 
 }
 
-exports.verifyPayment = async (req, res) => {
+exports.verifySignature = async (req, res) => {
     console.log("Incoming Headers:", req.headers); // Log all headers
     const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
 
