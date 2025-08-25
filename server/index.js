@@ -20,7 +20,7 @@ app.use(express.json());
 dbConnect();
 
 // middlewares
-app.use(express.json())
+// app.use(express.json())
 app.use(cookieparser())
 app.use(cors({
     origin: 'http://localhost:3000',
