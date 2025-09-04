@@ -1,4 +1,5 @@
-const { default: mongoose } = require('mongoose')
+// const { default: mongoose } = require('mongoose')
+const mongoose = require('mongoose')
 const { instance } = require('../config/razorpay')
 const Course = require('../models/Course')
 const User = require('../models/User')
@@ -198,36 +199,36 @@ exports.sendPaymentSuccessEmail = async (req, res) => {
     }
 }
 
-export const webhookHandler = async (req, res) => {
-  try {
-    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
-    const signature = req.headers["x-razorpay-signature"];
+// export const webhookHandler = async (req, res) => {
+//   try {
+//     const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
+//     const signature = req.headers["x-razorpay-signature"];
 
-    const shasum = crypto.createHmac("sha256", webhookSecret);
-    shasum.update(JSON.stringify(req.body));
-    const digest = shasum.digest("hex");
+//     const shasum = crypto.createHmac("sha256", webhookSecret);
+//     shasum.update(JSON.stringify(req.body));
+//     const digest = shasum.digest("hex");
 
-    if (digest !== signature) {
-      return res.status(400).json({ success: false, message: "Invalid webhook signature" });
-    }
+//     if (digest !== signature) {
+//       return res.status(400).json({ success: false, message: "Invalid webhook signature" });
+//     }
 
-    const event = req.body.event;
+//     const event = req.body.event;
 
-    if (event === "payment.captured") {
-      const paymentEntity = req.body.payload.payment.entity;
+//     if (event === "payment.captured") {
+//       const paymentEntity = req.body.payload.payment.entity;
 
-      // ✅ Enroll user based on order_id
-      const orderId = paymentEntity.order_id;
-      const paymentId = paymentEntity.id;
+//       // ✅ Enroll user based on order_id
+//       const orderId = paymentEntity.order_id;
+//       const paymentId = paymentEntity.id;
 
-      // Lookup orderId → user & course
-      // await enrollUser(userId, courseId);
+//       // Lookup orderId → user & course
+//       // await enrollUser(userId, courseId);
 
-      console.log("✅ Webhook Payment Captured:", paymentId);
-    }
+//       console.log("✅ Webhook Payment Captured:", paymentId);
+//     }
 
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ success: false });
-  }
-};
+//     res.json({ success: true });
+//   } catch (err) {
+//     res.status(500).json({ success: false });
+//   }
+// };
