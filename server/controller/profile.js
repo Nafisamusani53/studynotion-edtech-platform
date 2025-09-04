@@ -7,6 +7,7 @@ const {passwordUpdated} = require('../mail/templates/passwordUpdate')
 const bcrypt = require('bcrypt')
 const {mailSender}  = require('../utils/mailSender')
 const mongoose = require("mongoose")
+const { secToDuration } = require('../utils/secsToDuration')
 
 // we have already created profile at the time of sign up
 // so we only to updates the profile
@@ -277,7 +278,7 @@ exports.getEnrolledCourses = async (req, res) => {
                 totalDurationInSeconds += userDetails.courses[i].courseContent[
                     j
                 ].subSection.reduce((acc, curr) => acc + parseInt(curr.timeDuration), 0)
-                userDetails.courses[i].totalDuration = convertSecondsToDuration(
+                userDetails.courses[i].totalDuration = secToDuration(
                     totalDurationInSeconds
                 )
                 SubsectionLength +=
