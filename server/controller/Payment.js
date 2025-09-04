@@ -112,49 +112,50 @@ exports.verifySignature = async (req, res) => {
     shasum.update(razorpay_order_id + "|" + razorpay_payment_id);
     const digest = shasum.digest("hex");
 
-    // if (razorpay_signature === digest) {
+    if (razorpay_signature === digest) {
 
-    //     const { courseId, userId } = req.body.payload.payment.entity.notes;
+        // const { courseId, userId } = req.body.payload.payment.entity.notes;
+        const userId = req.user.id;
 
-    //     try {
-    //         // find the course and enroll the students in it
-    //         const courseUpdate = await Course.findByIdAndUpdate(courseId, {
-    //             $push: {
-    //                 studentsEnrolled: userId
-    //             }
-    //         }, { new: true })
+        try {
+            // find the course and enroll the students in it
+            const courseUpdate = await Course.findByIdAndUpdate(courses[0], {
+                $push: {
+                    studentsEnrolled: userId
+                }
+            }, { new: true })
 
-    //         if (!courseUpdate) {
-    //             return res.status(500).json({
-    //                 success: true,
-    //                 message: "Course Not Found"
-    //             })
-    //         }
-
-
-    //         // update the student details
-    //         const updateStudents = await User.findByIdAndUpdate(userId, {
-    //             $push: {
-    //                 courses: courseUpdate._id
-    //             }
-    //         }, { new: true });
-
-    //         const mailResponse = await mailSender(updateStudents.email, "SuccessFully enrolled",
-    //             "Congratulations you have successfully enrolled in the course")
+            if (!courseUpdate) {
+                return res.status(500).json({
+                    success: true,
+                    message: "Course Not Found"
+                })
+            }
 
 
-    //         return res.status(200).json({
-    //             success: true,
-    //             message: "Signature Verified and Course Added"
-    //         })
-    //     }
-    //     catch (err) {
-    //         res.status(500).json({
-    //             success: false,
-    //             error: err.message
-    //         })
-    //     }
-    // }
+            // update the student details
+            const updateStudents = await User.findByIdAndUpdate(userId, {
+                $push: {
+                    courses: courseUpdate._id
+                }
+            }, { new: true });
+
+            const mailResponse = await mailSender(updateStudents.email, "SuccessFully enrolled",
+                "Congratulations you have successfully enrolled in the course")
+
+
+            return res.status(200).json({
+                success: true,
+                message: "Signature Verified and Course Added"
+            })
+        }
+        catch (err) {
+            res.status(500).json({
+                success: false,
+                error: err.message
+            })
+        }
+    }
     // signature not verified
     return res.status(400).json({
         success: false,
