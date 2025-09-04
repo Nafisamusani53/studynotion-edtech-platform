@@ -94,59 +94,66 @@ exports.capturePayment = async (req, res) => {
 
 exports.verifySignature = async (req, res) => {
     console.log("Incoming Headers:", req.headers); // Log all headers
-    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
+    console.log(req.body)
+    // const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
 
-    const signature = req.headers['x-razorpay-signature']
+    // const signature = req.headers['x-razorpay-signature']
 
-    const shasum = crypto.createHmac('sha256', webhookSecret);
-    shasum.update(JSON.stringify(req.body));
+    // const shasum = crypto.createHmac('sha256', webhookSecret);
+    // shasum.update(JSON.stringify(req.body));
+    // const digest = shasum.digest("hex");
+    // console.log("signature : ",signature)
+    // console.log("digest : ", digest)
+
+     const { razorpay_payment_id, razorpay_order_id, razorpay_signature, courses } = req.body;
+
+    const shasum = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET);
+    shasum.update(razorpay_order_id + "|" + razorpay_payment_id);
     const digest = shasum.digest("hex");
-    console.log("signature : ",signature)
-    console.log("digest : ", digest)
 
-    if (signature === digest) {
+    // if (razorpay_signature === digest) {
 
-        const { courseId, userId } = req.body.payload.payment.entity.notes;
+    //     const { courseId, userId } = req.body.payload.payment.entity.notes;
 
-        try {
-            // find the course and enroll the students in it
-            const courseUpdate = await Course.findByIdAndUpdate(courseId, {
-                $push: {
-                    studentsEnrolled: userId
-                }
-            }, { new: true })
+    //     try {
+    //         // find the course and enroll the students in it
+    //         const courseUpdate = await Course.findByIdAndUpdate(courseId, {
+    //             $push: {
+    //                 studentsEnrolled: userId
+    //             }
+    //         }, { new: true })
 
-            if (!courseUpdate) {
-                return res.status(500).json({
-                    success: true,
-                    message: "Course Not Found"
-                })
-            }
+    //         if (!courseUpdate) {
+    //             return res.status(500).json({
+    //                 success: true,
+    //                 message: "Course Not Found"
+    //             })
+    //         }
 
 
-            // update the student details
-            const updateStudents = await User.findByIdAndUpdate(userId, {
-                $push: {
-                    courses: courseUpdate._id
-                }
-            }, { new: true });
+    //         // update the student details
+    //         const updateStudents = await User.findByIdAndUpdate(userId, {
+    //             $push: {
+    //                 courses: courseUpdate._id
+    //             }
+    //         }, { new: true });
 
-            const mailResponse = await mailSender(updateStudents.email, "SuccessFully enrolled",
-                "Congratulations you have successfully enrolled in the course")
+    //         const mailResponse = await mailSender(updateStudents.email, "SuccessFully enrolled",
+    //             "Congratulations you have successfully enrolled in the course")
 
 
-            return res.status(200).json({
-                success: true,
-                message: "Signature Verified and Course Added"
-            })
-        }
-        catch (err) {
-            res.status(500).json({
-                success: false,
-                error: err.message
-            })
-        }
-    }
+    //         return res.status(200).json({
+    //             success: true,
+    //             message: "Signature Verified and Course Added"
+    //         })
+    //     }
+    //     catch (err) {
+    //         res.status(500).json({
+    //             success: false,
+    //             error: err.message
+    //         })
+    //     }
+    // }
     // signature not verified
     return res.status(400).json({
         success: false,
@@ -190,3 +197,37 @@ exports.sendPaymentSuccessEmail = async (req, res) => {
         })
     }
 }
+
+export const webhookHandler = async (req, res) => {
+  try {
+    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
+    const signature = req.headers["x-razorpay-signature"];
+
+    const shasum = crypto.createHmac("sha256", webhookSecret);
+    shasum.update(JSON.stringify(req.body));
+    const digest = shasum.digest("hex");
+
+    if (digest !== signature) {
+      return res.status(400).json({ success: false, message: "Invalid webhook signature" });
+    }
+
+    const event = req.body.event;
+
+    if (event === "payment.captured") {
+      const paymentEntity = req.body.payload.payment.entity;
+
+      // ✅ Enroll user based on order_id
+      const orderId = paymentEntity.order_id;
+      const paymentId = paymentEntity.id;
+
+      // Lookup orderId → user & course
+      // await enrollUser(userId, courseId);
+
+      console.log("✅ Webhook Payment Captured:", paymentId);
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false });
+  }
+};
