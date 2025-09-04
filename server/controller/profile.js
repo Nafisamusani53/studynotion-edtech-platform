@@ -1,6 +1,7 @@
 const Course = require('../models/Course')
 const Profile = require('../models/Profile')
 const User = require('../models/User')
+const CourseProgress = require("../models/CourseProgress")
 const { deleteFile } = require("../utils/deleteFIle")
 const { imageUploader } = require("../utils/imageUploader")
 const {passwordUpdated} = require('../mail/templates/passwordUpdate')
