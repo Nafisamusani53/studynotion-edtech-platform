@@ -3,6 +3,7 @@ const User = require('../models/User')
 const Course = require('../models/Course')
 const Section = require('../models/Section')
 const SubSection = require('../models/SubSection')
+const CourseProgress = require('../models/CourseProgress')
 const { imageUploader } = require('../utils/imageUploader')
 const { deleteFile } = require('../utils/deleteFIle')
 const { secToDuration } = require('../utils/secsToDuration')
@@ -149,6 +150,8 @@ exports.getFullCourseDetails = async (req, res) => {
     try {
         // fetch courseId
         const { courseId } = req.body;
+        const userId = req.user.id
+
 
         // validate id
         if (!courseId) {
@@ -175,6 +178,10 @@ exports.getFullCourseDetails = async (req, res) => {
             .populate("category")
             .populate("reviewAndRatings").exec();
 
+        let courseProgressCount = await CourseProgress.findOne({
+            courseId: courseId,
+            userId: userId,
+        })
         if (!course) {
             return res.status(400).json({
                 success: false,
@@ -182,11 +189,24 @@ exports.getFullCourseDetails = async (req, res) => {
             })
         }
 
+        let totalDurationInSeconds = 0
+        course.courseContent.forEach((content) => {
+            content.subSection.forEach((subSection) => {
+                const timeDurationInSeconds = parseInt(subSection.duration)
+                totalDurationInSeconds += timeDurationInSeconds
+            })
+        })
+
+    const totalDuration = secToDuration(totalDurationInSeconds)
+
         // return response
         return res.status(200).json({
             success: true,
             message: "Detailed fetched successfully",
-            data: course,
+            data: {course,
+                totalDuration,
+                completedVideos: courseProgressCount?.completedVideos ? courseProgressCount.completedVideos : [],
+            },
         })
 
     }

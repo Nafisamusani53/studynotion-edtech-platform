@@ -346,3 +346,43 @@ export const fetchCourseDetails = async (courseId) => {
   return result
 }
 
+export const createRating = async (data, token) => {
+  const toastId = toast.loading("Loading...")
+  let success = false
+  try {
+    const response = await apiConnector("POST", course.CREATE_RATING, data, {
+      Authorization: `Bearer ${token}`,
+    })
+    if (!response?.data?.success) {
+      throw new Error("Could Not Create Rating")
+    }
+    toast.success("Rating Created")
+    success = true
+  } catch (error) {
+    success = false
+    toast.error(error.message)
+  }
+  toast.dismiss(toastId)
+  return success
+}
+
+export const markLectureAsComplete = async (data, token) => {
+  let result = null
+  const toastId = toast.loading("Loading...")
+  try {
+    const response = await apiConnector("POST", course.LECTURE_COMPLETION, data, {
+      Authorization: `Bearer ${token}`,
+    })
+
+    if (!response.data.message) {
+      throw new Error(response.data.error)
+    }
+    toast.success("Lecture Completed")
+    result = true
+  } catch (error) {
+    toast.error(error.message)
+    result = false
+  }
+  toast.dismiss(toastId)
+  return result
+}

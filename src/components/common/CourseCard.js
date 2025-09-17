@@ -5,8 +5,6 @@ import { avgRatings } from '../../utils/reviewAndRatings';
 
 const CourseCard = ({ course}) => {
     return (
-
-
         <Link to={`/course/${course._id}`}>
             <div className='flex flex-col gap-5 p-4 bg-richblack-800 opacity-100 hover:scale-105 hover:bg-richblack-700 transition-all duration-200 rounded-md'>
             <img src={course.thumbnail} alt={course.courseName} className=' rounded-md' />
@@ -15,8 +13,8 @@ const CourseCard = ({ course}) => {
                 <p className='text-richblack-400'>{`${course?.instructor?.firstName} ${course?.instructor?.lastName}`}</p>
                 <ReactStars
                     count={5}
-                    edit={false}
                     size={20}
+                    isHalf = {true}
                     activeColor="#ffd700"
                     value={avgRatings(course?.reviewAndRatings)}
                 />

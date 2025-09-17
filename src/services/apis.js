@@ -40,6 +40,8 @@ export const course = {
     UPDATE_SUBSECTION : BASE_URL + "/course/updateSubSection",
     PUBLISH_COURSE : BASE_URL + "/course/publishCourse",
     COURSE_DETAILS : BASE_URL + "/course/getCourseDetails",
+    CREATE_RATING: BASE_URL + "/course/createRating",
+    LECTURE_COMPLETION: BASE_URL + "/course/updateCourseProgress",
    
 }
 

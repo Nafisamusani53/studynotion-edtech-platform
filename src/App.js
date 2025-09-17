@@ -26,7 +26,9 @@ import UpdatePassword from './pages/UpdatePassword';
 import EnrolledCourses from './components/core/DashboardPage/EnrolledCourses';
 import CourseDetails from './pages/CourseDetails';
 import Error from './pages/Error';
-
+import ViewCourse from './pages/ViewCourse';
+import VideoDetails from './components/core/ViewCourse/VideoDetails';
+import Cart from './components/core/DashboardPage/Cart/Cart';
 
 
 
@@ -79,12 +81,30 @@ function App() {
           {
             user && user.role === ACCOUNT_TYPE.STUDENT && (
               <>
+              <Route path="dashboard/cart" element={<Cart />} />
               <Route path='dashboard/enrolled-courses' element={<EnrolledCourses/>}/>
               </>
               
             )
           }
 
+        </Route>
+
+                <Route
+          element={
+            <PrivateRoute>
+              <ViewCourse />
+            </PrivateRoute>
+          }
+        >
+          {user && user.role === ACCOUNT_TYPE.STUDENT && (
+            <>
+              <Route
+                path="view-course/:courseId/section/:sectionId/sub-section/:subSectionId"
+                element={<VideoDetails />}
+              />
+            </>
+          )}
         </Route>
         <Route path="*" element={<Error />} />
       </Routes>

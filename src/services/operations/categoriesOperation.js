@@ -19,6 +19,9 @@ export const getAllCategories = () => {
 }
 
 export const getCategoryPageDetails = async(data) => {
+    if(!data?.categoryId){
+        return;
+    }
     const toastId = toast.loading("Loading...");
     let result;
     try{

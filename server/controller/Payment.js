@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const { instance } = require('../config/razorpay')
 const Course = require('../models/Course')
 const User = require('../models/User')
+const CourseProgress = require('../models/CourseProgress')
 const { mailSender } = require('../utils/mailSender')
 const { paymentSuccessEmail } = require('../mail/templates/paymentSuccessEmail')
 const crypto = require('crypto')
@@ -94,19 +95,8 @@ exports.capturePayment = async (req, res) => {
 }
 
 exports.verifySignature = async (req, res) => {
-    console.log("Incoming Headers:", req.headers); // Log all headers
-    console.log(req.body)
-    // const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
-
-    // const signature = req.headers['x-razorpay-signature']
-
-    // const shasum = crypto.createHmac('sha256', webhookSecret);
-    // shasum.update(JSON.stringify(req.body));
-    // const digest = shasum.digest("hex");
-    // console.log("signature : ",signature)
-    // console.log("digest : ", digest)
-
-     const { razorpay_payment_id, razorpay_order_id, razorpay_signature, courses } = req.body;
+    const { razorpay_payment_id, razorpay_order_id, razorpay_signature, courses } = req.body;
+    const userId = req.user.id
 
     const shasum = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET);
     shasum.update(razorpay_order_id + "|" + razorpay_payment_id);
@@ -118,6 +108,11 @@ exports.verifySignature = async (req, res) => {
         const userId = req.user.id;
 
         try {
+            if (!courses?.length || !userId) {
+                return res
+                    .status(400)
+                    .json({ success: false, message: "Please Provide Course ID and User ID" })
+            }
             // find the course and enroll the students in it
             const courseUpdate = await Course.findByIdAndUpdate(courses[0], {
                 $push: {
@@ -132,11 +127,17 @@ exports.verifySignature = async (req, res) => {
                 })
             }
 
+            const courseProgress = await CourseProgress.create({
+        courseId: courses[0],
+        userId: userId,
+        completedVideos: [],
+      })
 
             // update the student details
             const updateStudents = await User.findByIdAndUpdate(userId, {
                 $push: {
-                    courses: courseUpdate._id
+                    courses: courseUpdate._id,
+                    courseProgress: courseProgress._id
                 }
             }, { new: true });
 
@@ -199,37 +200,3 @@ exports.sendPaymentSuccessEmail = async (req, res) => {
         })
     }
 }
-
-exports.webhookHandler = async (req, res) => {
-  try {
-    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
-    const signature = req.headers["x-razorpay-signature"];
-
-    const shasum = crypto.createHmac("sha256", webhookSecret);
-    shasum.update(JSON.stringify(req.body));
-    const digest = shasum.digest("hex");
-
-    if (digest !== signature) {
-      return res.status(400).json({ success: false, message: "Invalid webhook signature" });
-    }
-
-    const event = req.body.event;
-
-    if (event === "payment.captured") {
-      const paymentEntity = req.body.payload.payment.entity;
-
-      // ✅ Enroll user based on order_id
-      const orderId = paymentEntity.order_id;
-      const paymentId = paymentEntity.id;
-
-      // Lookup orderId → user & course
-      // await enrollUser(userId, courseId);
-
-      console.log("✅ Webhook Payment Captured:", paymentId);
-    }
-
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ success: false });
-  }
-};

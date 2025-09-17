@@ -37,7 +37,7 @@ const Catalog = () => {
         fetchData();
 
 
-    }, [categoryName])
+    }, [categories])
 
 
     return (

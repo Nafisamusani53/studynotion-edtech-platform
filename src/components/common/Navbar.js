@@ -86,9 +86,9 @@ const Navbar = () => {
                                 <IoCartOutline className='text-2xl'/>
                                 {
                                     totalItems > 0 && (
-                                        <span className='absolute rounded-full bg-yellow-300 p-2 '>
+                                        <div className='absolute flex bg-yellow-300 rounded-full aspect-square px-1.5 top-2.5 text-xs items-center -right-1 text-richblack-5'>
                                             {totalItems}
-                                        </span>
+                                        </div>
                                     )
                                 }
                             </Link>
