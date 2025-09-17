@@ -19,10 +19,6 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
     completedLectures,
   } = useSelector((state) => state.viewCourse)
 
-  console.log("CourseSelection",  courseSectionData)
-  console.log("courseEntireData", courseEntireData)
-  console.log("totalNoOfLectures", totalNoOfLectures)
-  console.log("completedLectures", completedLectures)
 
   useEffect(() => {
     ;(() => {

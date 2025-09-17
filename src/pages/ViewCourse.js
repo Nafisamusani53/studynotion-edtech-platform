@@ -21,9 +21,6 @@ export default function ViewCourse() {
   useEffect(() => {
     ;(async () => {
       const courseData = await getFullCourseDetails({courseId}, token)
-      console.log("COURSE DATA HERE  : ",courseData)
-      // console.log("Course Data here... ", courseData)
-      // console.log("completedVideos 2", courseData.completedVideos)
       dispatch(setCourseSectionData(courseData?.course?.courseContent))
       dispatch(setEntireCourseData(courseData?.course))
       dispatch(setCompletedLectures(courseData.completedVideos))
