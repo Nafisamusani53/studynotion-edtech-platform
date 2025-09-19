@@ -23,7 +23,7 @@ dbConnect();
 // app.use(express.json())
 app.use(cookieparser())
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://studynotion-edtech-platform-hazel.vercel.app',
     credentials: true,
 }))
 app.use(fileUpload({
