@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { Link, matchPath, useLocation } from 'react-router-dom'
+ import { Link, matchPath, useLocation } from 'react-router-dom'
 import logo from "../../assests/download.png"
 import { NavbarLinks } from "../../data/navbar-links"
 import { ACCOUNT_TYPE } from "../../utils/constant"
-import { IoCartOutline } from "react-icons/io5";
 import {  useSelector } from 'react-redux'
 import ProfileDropdown from '../core/Auth/ProfileDropdown'
-import { IoIosArrowDown,  IoIosSearch } from "react-icons/io";
 import { BsChevronDown } from 'react-icons/bs'
-import { apiConnector } from '../../services/apiConnector'
 import { AiOutlineMenu, AiOutlineShoppingCart } from 'react-icons/ai'
 
 

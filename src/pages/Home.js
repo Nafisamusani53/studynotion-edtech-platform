@@ -15,8 +15,9 @@ const Home = () => {
   return (
     <main>
       {/* Section - 1 */}
+      
       <section
-        className=" mx-auto flex w-11/12 max-w-maxContent flex-col 
+        className="mx-auto flex w-11/12 max-w-maxContent flex-col h-fit max-xl:mb-[40rem] max-lg:mb-[48rem] max-sm:mb-[53rem]
       items-center justify-between gap-8 text-white"
       >
         <Link to={"/signup"} className="mx-auto mt-16">
@@ -100,8 +101,8 @@ const Home = () => {
       </section>
 
       {/* Section-2 */}
-      <section className="bg-[#F9F9F9] flex flex-col items-center font-inter pb-14">
-        <div className="homepage-bg w-full pt-36">
+      <section className="bg-[#F9F9F9] flex flex-col items-center font-inter pb-14 ">
+        <div className="homepage-bg w-full pt-36 max-xl:pt-6">
           <div className="flex gap-7 mx-auto items-center justify-center my-16">
             <CtnButton
               text={"Explore Full Catalogue"}

@@ -7,11 +7,11 @@ import { FaArrowRight } from "react-icons/fa";
 const CodeBlocks = ({ left, sequence, button1, button2, arrow, gradient,s1,s2,s3,s4,color,linkto }) => {
   return (
     <div
-      className={`flex 
+      className={`flex flex-col md:flex-row items-center
       ${left ? "flex-row" : "flex-row-reverse"} 
       mx-auto gap-10 justify-between my-12`}
     >
-      <div className="flex flex-col gap-8 w-[46%]">
+      <div className="flex flex-col gap-8 md:w-[46%] w-full">
         <p className="text-4xl font-semibold">
           {s1}
           <HighlightText

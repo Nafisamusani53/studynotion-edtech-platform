@@ -20,10 +20,10 @@ const LearningLanguageSection = () => {
             </p>
           </div>
 
-          <div className="flex items-center justify-center">
-            <img src={knowYourProgress} className="" />
-            <img src={compareWithOther} className="ml-[-144px]" />
-            <img src={planYourLessons} className="ml-[-144px]" />
+          <div className="flex items-center justify-center max-lg:flex-col">
+            <img src={knowYourProgress} className="object-contain" />
+            <img src={compareWithOther} className="ml-[-144px] object-contain" />
+            <img src={planYourLessons} className="ml-[-144px] object-contain" />
           </div>
 
           <div className="flex items-center justify-center">

@@ -22,7 +22,7 @@ const ExploreMore = () => {
         setCurrentCard(result[0].courses[0].heading)
     }
     return (
-        <div className='flex flex-col gap-6 items-center justify-center mb-52'>
+        <div className='flex flex-col gap-6 items-center justify-center mb-52 h-fit'>
             <div className='flex flex-col gap-4'>
                 <p className="text-center text-4xl font-semibold">
                     Unlock the
@@ -34,7 +34,7 @@ const ExploreMore = () => {
             </div>
 
             {/* Tabs */}
-            <div className='bg-richblack-800 text-richblack-300 flex flex-row items-center 
+            <div className='bg-richblack-800 text-richblack-300 flex flex-row items-center max-lg:hidden
             justify-center gap-5 rounded-full px-1 py-1 shadow-[0px_-1px_0px_0px_rgba(255,255,255,0.18)_inset]'>
                 {tabsName.map((tag,index) => (
                     <p className={`${tag === currentTab 
@@ -47,8 +47,8 @@ const ExploreMore = () => {
                 ))}
             </div>
 
-            <div className='flex gap-16 items-center justify-center my-6 absolute
-             translate-y-[93%]'>
+            <div className='flex gap-16 items-center justify-center my-6 absolute max-lg:flex-col flex-wrap
+             translate-y-[93%] max-sm:translate-y-[57%] max-xl:translate-y-[70%] max-lg:translate-y-[55%]'>
                    {courses.map((course, index) => (
                     <CourseCard course={course} key={index} 
                     setCurrentCard={setCurrentCard} currentCard={currentCard}/>

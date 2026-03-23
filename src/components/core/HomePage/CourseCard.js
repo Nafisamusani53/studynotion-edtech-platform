@@ -4,7 +4,7 @@ import { ImTree } from "react-icons/im";
 
 const CourseCard = ({course, currentCard, setCurrentCard}) => {
  return (
-    <div className={`w-[30%] flex flex-col gap-14 items-center justify-between
+    <div className={`w-[30%] flex flex-col gap-14 items-center justify-between max-lg:w-[80%]
         text-richblack-400
      ${course.heading === currentCard 
      ? "bg-white shadow-[12px_12px_0_0] shadow-yellow-50" 
