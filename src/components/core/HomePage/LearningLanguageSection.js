@@ -21,9 +21,9 @@ const LearningLanguageSection = () => {
           </div>
 
           <div className="flex items-center justify-center max-lg:flex-col">
-            <img src={knowYourProgress} className="object-contain" />
-            <img src={compareWithOther} className="ml-[-144px] object-contain" />
-            <img src={planYourLessons} className="ml-[-144px] object-contain" />
+            <img alt=""  src={knowYourProgress} className="object-contain" />
+            <img alt="" src={compareWithOther} className="ml-[-144px] object-contain" />
+            <img alt="" src={planYourLessons} className="ml-[-144px] object-contain" />
           </div>
 
           <div className="flex items-center justify-center">

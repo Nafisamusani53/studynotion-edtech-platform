@@ -8,8 +8,7 @@ import { Link } from 'react-router-dom'
 import { FaClockRotateLeft } from "react-icons/fa6";
 
 const OTP = () => {
-    const {signupData, token} = useSelector((state) => state.auth)
-    const { user } = useSelector((state) => state.profile)
+    const {signupData} = useSelector((state) => state.auth)
     const dispatch = useDispatch();
     const navigate = useNavigate();
 

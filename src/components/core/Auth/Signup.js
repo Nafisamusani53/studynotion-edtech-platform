@@ -1,6 +1,5 @@
 import React,{useState} from 'react'
-import CountryCode from '../../../data/countryCode.json'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { sendOTP } from '../../../services/operations/authOperations';
 import { setSignupData } from '../../../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +14,6 @@ import { IoEyeOutline } from "react-icons/io5";
 const Signup = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {signupData} = useSelector((state) => state.auth)
     const[data, setData] = useState({
         firstName:"",
         lastName:"",

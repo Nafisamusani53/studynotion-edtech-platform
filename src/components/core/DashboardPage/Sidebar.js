@@ -16,19 +16,21 @@ const Sidebar = () => {
   return (
     <aside className="md:visible invisible px-auto flex h-[calc(100vh-3.5rem)] min-w-[220px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800 py-10">
         <ul className='flex flex-col pb-8'>
-          {
-            sidebarLinks.map((link, index) => {
-              if(link.type === undefined || link.type === user?.role){
-                return (
-                  <li key={index} className='flex gap-3 relative font-inter px-8 py-2 text-sm text-richblack-300'>
-                    <link.icon className='text-lg'/>
-                    <Link to={link.path}>
-                    <p className=' tracking-[0.08em]'>{link.name}</p>
-                    </Link>
-                </li>)
-              }
-            })
-          }
+        {
+          sidebarLinks
+            .filter(link => link.type === undefined || link.type === user?.role)
+            .map((link, index) => (
+              <li
+                key={index}
+                className="flex gap-3 relative font-inter px-8 py-2 text-sm text-richblack-300"
+              >
+                <link.icon className="text-lg" />
+                <Link to={link.path}>
+                  <p className="tracking-[0.08em]">{link.name}</p>
+                </Link>
+              </li>
+            ))
+        }
         </ul>
         <ul className='flex flex-col pb-8 px-6 '>
           <li className='flex gap-3 relative font-inter px-2 py-2 pt-8 text-richblack-300 border-t-[1px] border-richblack-700 '>

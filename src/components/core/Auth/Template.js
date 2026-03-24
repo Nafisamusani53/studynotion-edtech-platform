@@ -28,8 +28,8 @@ const Template = ({heading,des1, des2, formType}) => {
 
       {/* 2 section */}
       <div className='relative flex justify-center '>
-        <img src = {frame} className='absolute w-[28rem] h-[25rem] top-4 left-4 '/>
-        <img src={image} className='relative w-[28rem] h-[25rem]'/>
+        <img alt="" src = {frame} className='absolute w-[28rem] h-[25rem] top-4 left-4 '/>
+        <img alt="" src={image} className='relative w-[28rem] h-[25rem]'/>
       </div>
     </div>
   )

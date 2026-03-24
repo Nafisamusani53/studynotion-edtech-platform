@@ -139,7 +139,7 @@ const Home = () => {
       <section className="flex flex-col my-6 mx-14">
         <div className="flex my-6 gap-20 items-center justify-center tracking-wide">
           <div className="shadow-white shadow-[-20px_-20px_0px_0px] w-[50%] object-cover">
-            <img src={instructor} />
+            <img alt="" src={instructor} />
           </div>
 
           <div className="flex flex-col gap-10 w-[50%]">

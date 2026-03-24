@@ -73,7 +73,7 @@ const Timeline = () => {
                   </p>
                 </div>
               </div>
-              <img
+              <img alt="" 
                 src={Timelineimage}
                 className="shadow-white shadow-[20px_20px_0px_0px] object-cover h-[400px] lg:h-fit max-lg:object-center"
               />

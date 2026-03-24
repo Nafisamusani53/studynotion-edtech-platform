@@ -1,5 +1,5 @@
 import { ACCOUNT_TYPE } from "../utils/constant";
-import { VscDashboard, VscVm, VscAdd, VscMortarBoard, VscHistory, VscBook, VscBookmark} from 'react-icons/vsc';
+import { VscDashboard, VscVm, VscAdd, VscHistory, VscBook} from 'react-icons/vsc';
 import { BsPerson } from "react-icons/bs";
 
 export const sidebarLinks = [

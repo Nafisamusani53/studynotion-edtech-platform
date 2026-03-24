@@ -4,9 +4,7 @@ import image1 from "../assests/aboutus1.86606deea209badf5925.webp";
 import image2 from "../assests/aboutus2.0a1cd797ce3a69e81830.webp";
 import image3 from "../assests/aboutus3.f5cfba861877ea03735d.webp";
 import image4 from "../assests/FoundingStory.84f2828a5f4a9c08a802.png";
-import { Link } from 'react-router-dom';
 import Quote from '../components/core/AboutUsPage/Quote';
-import { Controller } from 'react-hook-form';
 import LearningGrid from '../components/core/AboutUsPage/LearningGrid';
 import ContactForm from '../components/core/AboutUsPage/ContactForm';
 
@@ -29,9 +27,9 @@ const About = () => {
           <div className ="sm:h-[70px] lg:h-[150px]"></div>
 
           <div className='absolute bottom-0 left-[50%] grid w-[100%] translate-x-[-50%] translate-y-[30%] grid-cols-3 gap-3 lg:gap-5'> 
-            <img src={image1}/>
-            <img src={image2}/>
-            <img src={image3}/>
+            <img alt="" src={image1}/>
+            <img alt="" src={image2}/>
+            <img alt="" src={image3}/>
           </div>
 
           
@@ -64,7 +62,7 @@ const About = () => {
         </div>
 
         <div>
-          <img src={image4} className='shadow-[0_0_20px_0] shadow-[#FC6767]'/>
+          <img alt='' src={image4} className='shadow-[0_0_20px_0] shadow-[#FC6767]'/>
         </div>
         </div>
 

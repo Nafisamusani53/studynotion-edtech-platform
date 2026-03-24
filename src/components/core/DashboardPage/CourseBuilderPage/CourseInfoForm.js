@@ -8,7 +8,6 @@ import Buttons from '../Buttons';
 import { createCourse,updateCourse } from '../../../../services/operations/courseOperation';
 import { setStep } from '../../../../slices/courseSlice';
 import { MdKeyboardArrowRight } from "react-icons/md";
-import { useParams } from 'react-router-dom';
 
 const CourseInfoForm = () => {
 
@@ -21,11 +20,10 @@ const CourseInfoForm = () => {
   } = useForm();
 
   const { categories } = useSelector((state) => state.category);
-  const { course, editCourse, step } = useSelector((state) => state.course);
+  const { course, editCourse } = useSelector((state) => state.course);
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const {courseId} = useParams();
 
   const style = `appearance-none w-full bg-richblack-700 rounded-md shadow-[0px_-2px_0px_0px_rgba(255,255,255,0.18)_inset] 
   px-3 py-3 text-lg focus-visible:outline-none mb-4`;

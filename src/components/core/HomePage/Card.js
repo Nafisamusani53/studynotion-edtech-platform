@@ -5,7 +5,7 @@ const Card = ({ image, heading, text }) => {
         <div className='flex gap-5'>
             <div className='rounded-full bg-white w-[49px] h-[49px] flex items-center justify-center
             shadow-[0px_0px_62px_0px] shadow-[#0000001F]'>
-                <img src={`${image}`}/>
+                <img alt="" src={`${image}`}/>
             </div>
             <div className='space-y-1'>
                 <p className='text-richblack-800 text-lg font-bold'>{heading}</p>

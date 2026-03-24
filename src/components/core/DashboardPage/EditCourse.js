@@ -10,7 +10,6 @@ const EditCourse = () => {
     const {courseId} = useParams();
     const dispatch = useDispatch();
     const {token} = useSelector((state)=>state.auth)
-    const {course} = useSelector((state)=> state.course);
 
     useEffect(()=>{
       const fetchData = async()=>{
