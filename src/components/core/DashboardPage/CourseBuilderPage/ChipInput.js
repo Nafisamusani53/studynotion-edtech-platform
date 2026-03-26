@@ -9,7 +9,7 @@ const ChipInput = ({ label, name, placeholder, register, errors, setValue, getVa
 
     useEffect(() => {
             if(editCourse){
-                setTags([...tags, course?.tag])
+                setTags([...tags, course?.course?.tag])
             }
         register(name, {
             required: {

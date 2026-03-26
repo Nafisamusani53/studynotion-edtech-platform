@@ -21,6 +21,7 @@ const CourseInfoForm = () => {
 
   const { categories } = useSelector((state) => state.category);
   const { course, editCourse } = useSelector((state) => state.course);
+  const courseData = course?.course
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -31,7 +32,7 @@ const CourseInfoForm = () => {
 
   const courseAddHandler = (data) => {
     if(editCourse){
-      data.courseId = course._id;
+      data.courseId = courseData?._id;
       dispatch(updateCourse(data, token))
     }
     else{
@@ -43,14 +44,14 @@ const CourseInfoForm = () => {
     if(editCourse){
 
 
-      setValue("courseTitle", course.courseName)
-      setValue("courseShortDesc", course.courseDescription)
-      setValue("coursePrice", course.price)
-      setValue("courseTags", course.tag)
-      setValue("courseBenefits", course.whatYouWillLearn)
-      setValue("courseCategory", course.category)
-      setValue("courseRequirements", course.instructions)
-      setValue("courseImage", course.thumbnail)
+      setValue("courseName", courseData?.courseName)
+      setValue("courseDescription", courseData?.courseDescription)
+      setValue("price", courseData?.price)
+      setValue("tag", courseData?.tag)
+      setValue("whatYouWillLearn", courseData?.whatYouWillLearn)
+      setValue("category", courseData.category?._id)
+      setValue("instructions", courseData?.instructions)
+      setValue("thumbnail", courseData?.thumbnail)
     }
   },[])
 
@@ -65,7 +66,6 @@ const CourseInfoForm = () => {
           type='text'
           placeholder="Write Course Title"
           {...register("courseName", { required: true })}
-          defaultValue={course?.courseName}
           className={style}
         />
 
@@ -84,7 +84,6 @@ const CourseInfoForm = () => {
           rows={5}
           placeholder="Write Description"
           {...register("courseDescription", { required: true })}
-          defaultValue={course?.courseDescription}
           className={style}
         />
 
@@ -103,7 +102,6 @@ const CourseInfoForm = () => {
           type='number'
           placeholder="Write price"
           {...register("price", { required: true })}
-          defaultValue={course?.price}
           className={style}
         />
 
@@ -176,7 +174,6 @@ const CourseInfoForm = () => {
           placeholder="Write benefits of the course"
           rows={5}
           {...register("whatYouWillLearn", { required: true })}
-          defaultValue={course?.whatYouWillLearn}
           className={style}
         />
 
@@ -190,7 +187,6 @@ const CourseInfoForm = () => {
       {/* Instructions or Requirements for the course */}
       <Requirements
         label="Requirements / Intructions"
-        name="instructions"
         placeholder="Enter instructions"
         register={register}
         errors={errors}

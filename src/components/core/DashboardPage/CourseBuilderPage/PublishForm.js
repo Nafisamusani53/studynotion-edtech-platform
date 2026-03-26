@@ -40,11 +40,10 @@ const PublishForm = () => {
     <>
       <div className='flex flex-col gap-7'>
         <h1 className='text-4xl font-bold text-richblack-5'>Publish Course</h1>
-        <label>
+        <label className='flex gap-5'>
           <p className='text-richblack-400 text-xl'>Make this course public</p>
           <input type='checkbox' color='#6E727F' value="true" name="publish" ref={ref} />
         </label>
-        <p className='text-xl text-richblack-400'>Make this course public</p>
       </div>
 
       <div className='flex justify-between items-center mt-6'>

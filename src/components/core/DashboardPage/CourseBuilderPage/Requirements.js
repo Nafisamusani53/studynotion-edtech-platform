@@ -9,13 +9,13 @@ const Requirements = ({ label, name, placeholder, register, errors, setValue, ge
 
     useEffect(() => {
         if (editCourse) {
-            setRequirementList(course?.instructions)
+            setRequirementList(course?.course?.instructions || [])
           }
         register(name , {required : {
             value: true,
-            validate: (value) => value > 0
+            validate: (value) => value.length > 0
         }})
-    }, [course])
+    }, [editCourse, course, name, register])
 
     const itemAddHandler = (e) => {
         e.preventDefault();

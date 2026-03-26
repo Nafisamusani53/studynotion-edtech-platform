@@ -44,11 +44,24 @@ export default function Upload({
     }
   }
 
-  useEffect(() => {
-    setPreviewSource( viewData ? viewData : editData ? editData : course?.thumbnail)
-    register(name, { required: true })
+  // useEffect(() => {
+  //   setPreviewSource( viewData ? viewData : editData ? editData : course?.course?.thumbnail)
+  //   register(name, { required: true })
 
-  }, [register,course])
+  // }, [register,course])
+
+  useEffect(() => {
+  const value =
+    viewData || editData || course?.course?.thumbnail;
+
+  if (value) {
+    setPreviewSource(value);
+    setValue(name, value); // ✅ important
+  }
+
+  register(name, { required: true });
+
+}, [register, course, name, setValue, viewData, editData]);
 
   useEffect(() => {
     setValue(name, selectedFile)
