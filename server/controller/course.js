@@ -226,10 +226,9 @@ exports.editCourse = async (req, res) => {
             whatYouWillLearn,
             price,
             category,
-            tag,
-            instructions } = req.body
-        const thumbnail = req.files.thumbnail
-        let { status } = req.body;
+            instructions} = req.body
+        let thumbnail = req.files?.thumbnail || req.body?.thumbnail
+        let { status, tag } = req.body;
 
         if (!courseId ||
             !courseName ||
@@ -262,6 +261,7 @@ exports.editCourse = async (req, res) => {
         const instructorDetails = await User.findById(userId, {
             role: "Instructor",
         });
+        
 
         // Verify that userId and instructorDetails._id are same or different
         if (!instructorDetails) {
@@ -278,6 +278,11 @@ exports.editCourse = async (req, res) => {
                 success: false,
                 message: "Course does not exist"
             })
+        }
+
+        //course tag
+        if(courseExist.tag.length !== tag.length){
+            tag = [...courseExist.tag]
         }
 
         //check given Category is valid or not
@@ -297,8 +302,19 @@ exports.editCourse = async (req, res) => {
 
         //Upload thumbnail Image to Cloudinary
 
-        const image = await imageUploader(thumbnail, process.env.FOLDER_NAME)
+        // const image = await imageUploader(thumbnail, process.env.FOLDER_NAME)
+        let imageUrl = req.body.thumbnail; // default (existing URL)
 
+        if (req.files && req.files.thumbnail) {
+            const uploadedImage = await imageUploader(
+                thumbnail,
+                process.env.FOLDER_NAME
+            );
+
+            imageUrl = uploadedImage.secure_url;
+        }
+
+        
         const courseNew = await Course.findByIdAndUpdate(courseId, {
             courseName,
             courseDescription,
@@ -306,7 +322,7 @@ exports.editCourse = async (req, res) => {
             whatYouWillLearn,
             price: newPrice,
             tag,
-            thumbnail: image.secure_url,
+            thumbnail: imageUrl,
             category: categoryDetails._id,
             status,
             instructions
