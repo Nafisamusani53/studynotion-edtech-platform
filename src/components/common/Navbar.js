@@ -14,7 +14,7 @@ const Navbar = () => {
     const { token } = useSelector((state) => state.auth);
     const { user } = useSelector((state) => state.profile);
     const { totalItems } = useSelector((state) => state.cart);
-    const {categories} = useSelector((state)=> state.category)
+    const {categories} = useSelector((state)=> state.category);
     
 
     const location = useLocation()
@@ -54,21 +54,19 @@ const Navbar = () => {
                         {(categories && categories.length) ? (
                           <>
                             {categories
-                              ?.filter(
-                                (subLink) => categories?.courses?.length > 0
-                              )
-                              ?.map((subLink, i) => (
+                              ?.map((subLink, i) => {
+                                return (
                                 <Link
-                                  to={`/catalog/${categories.name
+                                  to={`/catalog/${subLink?.categoryName
                                     .split(" ")
                                     .join("-")
                                     .toLowerCase()}`}
                                   className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
                                   key={i}
                                 >
-                                  <p>{categories.name}</p>
+                                  <p>{subLink.categoryName}</p>
                                 </Link>
-                              ))}
+                              )})}
                           </>
                         ) : (
                           <p className="text-center">No Courses Found</p>
